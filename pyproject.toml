@@ -21,6 +21,8 @@ classifiers = [
 ]
 dependencies = [
     "globus_sdk",
+    "click",
+    "pyyaml",
 ]
 
 [project.urls]
