@@ -1,1 +1,4 @@
-RDA python code template to create new and modify existing RDA python packages.
+# rda-python-globus
+
+This application is a command-line tool to support Globus transfer and other
+data management tools for the NSF NCAR Research Data Archive.
