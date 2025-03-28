@@ -1,11 +1,16 @@
 import json
 import os
+import typing as t
+import textwrap
 
 import click
+from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options, 
-    transfer_client, 
+	task_submission_options,
+    transfer_client,
+	shlex_process_json_stream,
 	TRANSFER_SOURCE,
     TRANSFER_DESTINATION,
 )
@@ -15,15 +20,27 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_LABEL = "RDA Quasar transfer"
 
+def add_batch_to_transfer_data(batch):
+	""" Add batch of files to transfer data object. """
+
+	batch_json = shlex_process_json_stream(batch)
+
+	try:
+		files = batch_json['files']
+	except KeyError:
+		logger.error("[add_batch_to_transfer_data] Files missing from JSON or command-line input")
+		sys.exit(1)
+
+	for i in range(len(files)):
+		source_file = files[i]['source_file']
+		dest_file = files[i]['destination_file']		
+		transfer_data.add_item(source_file, dest_file)
+
+	return transfer_data
+
 def submit_transfer(data):
 	""" General data transfer to RDA endpoints.  Input should be JSON formatted input 
 	    if transferring multiple files in batch mode. """
-
-	try:
-		files = data['files']
-	except KeyError:
-		logger.error("[submit_rda_transfer] Files missing from JSON or command-line input")
-		sys.exit(1)
 
 	tc = transfer_client()
 		
@@ -92,12 +109,6 @@ def submit_transfer(data):
     help="Path to destination file name, relative to destination endpoint host path.",
 )
 @click.option(
-    "--label",
-    default=DEFAULT_LABEL,
-    show_default=True,
-	help="Label for the transfer.",
-)
-@click.option(
 	"--verify-checksum",
 	"-vc",
 	is_flag=True,
@@ -126,14 +137,42 @@ def submit_transfer(data):
     ),
 )
 @common_options
-def transfer_command():
-    client = transfer_client()
-    
-    submit_doc(client, index_id, filename, task_list_file)
+@task_submission_options
+def transfer_command(
+	source_endpoint: str,
+	destination_endpoint: str,
+	source_file: str,
+	destination_file: str,
+	verify_checksum: bool,
+	batch: t.TextIO | None,
+	dry_run: bool,
+	label: str | None,
+	) -> None:
+	"""Submit a Globus transfer task."""
+	
+	tc = transfer_client()
+		
+	transfer_data = TransferData(transfer_client=tc,
+							     source_endpoint=source_endpoint,
+							     destination_endpoint=destination_endpoint,
+							     label=DEFAULT_LABEL,
+							     verify_checksum=verify_checksum)
 
-    click.echo(
-        f"""\
-ingest document submission (task submission) complete
-task IDs are visible in
-    {task_list_file}"""
-    )
+	if batch:
+		transfer_data = add_batch_to_transfer_data(batch)
+	else:
+		transfer_data.add_item(source_file, destination_file)
+		
+	if dry_run:
+		data = transfer_data.data
+		msg = "Source Path: {0}\nDest Path: {1}".format(data['source_path'], data['destination_path'])
+
+        # exit safely
+		return
+    
+	res = transfer_client.submit_transfer(transfer_data)
+	task_id = res["task_id"]
+	msg = "{0}\nTask ID: {1}".format(transfer_result['message'], task_id)
+	logger.info(msg)
+	
+	click.echo(f"""{msg}""")
