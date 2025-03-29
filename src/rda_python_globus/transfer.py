@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_LABEL = "RDA Quasar transfer"
 
-def add_batch_to_transfer_data(batch):
+def add_batch_to_transfer_data(batch, transfer_data):
 	""" Add batch of files to transfer data object. """
 
 	batch_json = process_json_stream(batch)
@@ -161,7 +161,7 @@ def transfer_command(
 							     verify_checksum=verify_checksum)
 
 	if batch:
-		transfer_data = add_batch_to_transfer_data(batch)
+		transfer_data = add_batch_to_transfer_data(batch, transfer_data)
 	else:
 		transfer_data.add_item(source_file, destination_file)
 		
