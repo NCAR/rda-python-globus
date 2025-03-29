@@ -12,7 +12,7 @@ RDA_QUASAR_CLIENT_ID = "05c2f58b-c667-4fc4-94fb-546e1cd8f41f"
 
 def token_storage_adapter():
     if not hasattr(token_storage_adapter, "_instance"):
-        token_storage_adapter._instance = SimpleJSONFileAdapter(CLIENT_CONFIG, namespace="DEFAULT")
+        token_storage_adapter._instance = SimpleJSONFileAdapter(CLIENT_CONFIG)
     return token_storage_adapter._instance
 
 def internal_auth_client():
