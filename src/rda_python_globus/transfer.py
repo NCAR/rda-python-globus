@@ -1,5 +1,4 @@
 import json
-import os
 import typing as t
 import textwrap
 
@@ -122,7 +121,7 @@ def submit_transfer(data):
     help=textwrap.dedent(
 		"""\
         Accept a batch of source/destination file pairs from a file.
-		Use '-' to read from stdin and close the stream with 'Ctrl + D'.  
+		Use '-' to read from stdin and close the stream with 'Ctrl+D'.  
 		Uses --source-endpoint and --destination-endpoint as passed 
 		on the command line.
 		
