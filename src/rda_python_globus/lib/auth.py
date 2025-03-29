@@ -24,12 +24,11 @@ def auth_client():
 
 def transfer_client():
     storage_adapter = token_storage_adapter()
-    as_dict = storage_adapter.read_as_dict()
+    token_data = storage_adapter.get_token_data(TRANSFER_RESOURCE_SERVER)
 
-    authdata = as_dict[TRANSFER_RESOURCE_SERVER]
-    access_token = authdata["access_token"]
-    refresh_token = authdata["refresh_token"]
-    access_token_expires = authdata["expires_at_seconds"]
+    access_token = token_data["access_token"]
+    refresh_token = token_data["refresh_token"]
+    access_token_expires = token_data["expires_at_seconds"]
     authorizer = globus_sdk.RefreshTokenAuthorizer(
         refresh_token,
         internal_auth_client(),
