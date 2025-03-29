@@ -172,6 +172,7 @@ def transfer_command(
 		msg += "\nLabel: {0}".format(data['label'])
 		msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
 		msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))
+		click.echo(f"""{msg}""")
 
         # exit safely
 		return
