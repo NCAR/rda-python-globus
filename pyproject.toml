@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rda_python_globus"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
@@ -29,4 +29,4 @@ dependencies = [
 "Homepage" = "https://github.com/NCAR/rda-python-globus"
 
 [project.scripts]
-dsglobus = "rda_python_globus:main"
+dsglobus = "rda_python_globus:cli"
