@@ -7,6 +7,7 @@ import typing as t
 import click
 
 from .auth import token_storage_adapter, auth_client, transfer_client
+from .config import TRANSFER_SOURCE, TRANSFER_DESTINATION
 
 RDA_BASE_PATH = '/glade/campaign/collections/rda'
 LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
@@ -74,4 +75,6 @@ __all__ = (
     "token_storage_adapter",
     "auth_client",
     "transfer_client",
+    "TRANSFER_SOURCE",
+    "TRANSFER_DESTINATION",
 )
