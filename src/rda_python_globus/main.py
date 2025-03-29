@@ -14,4 +14,4 @@ def cli():
     pass
 
 # cli workflow
-cli.add_command(transfer.transfer_cli)
+cli.add_command(transfer.transfer_command)
