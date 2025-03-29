@@ -40,9 +40,8 @@ def prettyprint_json(obj, fp=None):
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
 
-def shlex_process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
+def process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
     """ Process a JSON stream from stdin and return a JSON object. """
-    import shlex
     
     json_str = ""
 
@@ -51,11 +50,7 @@ def shlex_process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
         # Skip empty lines
         if not line.strip():
             continue
-
-        # Use shlex to split the line into tokens
-        tokens = shlex.split(line, comments=True)
-        if tokens:
-            json_str += " ".join(tokens)
+        json_str += line
     
     obj = json.loads(json_str)
     return obj
@@ -74,7 +69,7 @@ __all__ = (
     "task_submission_options",
     "validate_dsid",
     "prettyprint_json",
-    shlex_process_json_stream,
+    "process_json_stream",
     "configure_log",
     "token_storage_adapter",
     "auth_client",

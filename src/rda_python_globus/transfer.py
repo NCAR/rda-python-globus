@@ -10,7 +10,7 @@ from .lib import (
     common_options, 
 	task_submission_options,
     transfer_client,
-	shlex_process_json_stream,
+	process_json_stream,
 	TRANSFER_SOURCE,
     TRANSFER_DESTINATION,
 )
@@ -23,7 +23,7 @@ DEFAULT_LABEL = "RDA Quasar transfer"
 def add_batch_to_transfer_data(batch):
 	""" Add batch of files to transfer data object. """
 
-	batch_json = shlex_process_json_stream(batch)
+	batch_json = process_json_stream(batch)
 
 	try:
 		files = batch_json['files']
@@ -122,10 +122,12 @@ def submit_transfer(data):
     help=textwrap.dedent(
 		"""\
         Accept a batch of source/destination file pairs from a file.
-		Use '-' to read from stdin.  Uses --source-endpoint and
-		--destination-endpoint as passed on the command line.
+		Use '-' to read from stdin and close the stream with 'Ctrl + D'.  
+		Uses --source-endpoint and --destination-endpoint as passed 
+		on the command line.
 		
 		Uses JSON formatted input.  Example:
+		$ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
         {
             "files": [
                 {"source_file": "/data/ds999.9/file1.tar", "destination_file": "/ds999.9/file1.tar"},
@@ -133,6 +135,7 @@ def submit_transfer(data):
 	            {"source_file": "/data/ds999.9/file3.tar", "destination_file": "/ds999.9/file3.tar"}
             ]
         }
+		<Ctrl+D>
 """
     ),
 )
@@ -165,7 +168,11 @@ def transfer_command(
 		
 	if dry_run:
 		data = transfer_data.data
-		msg = "Source Path: {0}\nDest Path: {1}".format(data['source_path'], data['destination_path'])
+		msg = "Source endpoint: {0}".format(data['source_endpoint'])
+		msg += "\nDestination endpoint: {0}".format(data['destination_endpoint'])
+		msg += "\nLabel: {0}".format(data['label'])
+		msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
+		msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))
 
         # exit safely
 		return
