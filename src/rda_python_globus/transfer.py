@@ -146,9 +146,9 @@ def transfer_command(
 	source_file: str,
 	destination_file: str,
 	verify_checksum: bool,
-	batch: t.TextIO | None,
+	batch: t.TextIO,
 	dry_run: bool,
-	label: str | None,
+	label: str
 	) -> None:
 	"""Submit a Globus transfer task."""
 	
