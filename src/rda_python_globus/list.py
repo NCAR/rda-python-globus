@@ -9,7 +9,7 @@ from .lib import (
     common_options,
     print_table, 
     transfer_client,
-	RDA_QUASAR_ENDPOINT,
+	TRANSFER_DESTINATION,
 )
 
 import logging
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
     "--endpoint",
     "-ep",
     type=str,
-	default=RDA_QUASAR_ENDPOINT,
+	default=TRANSFER_DESTINATION,
     show_default=True,
     help="Endpoint ID or name.",
 )
