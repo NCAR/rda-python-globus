@@ -111,6 +111,25 @@ def print_table(iterable, headers_and_keys, print_headers=True):
 
     return
 
+def _key_to_keyfunc(k):
+    """
+    We allow for 'keys' which are functions that map columns onto value
+    types -- they may do formatting or inspect multiple values on the
+    object. In order to support this, wrap string keys in a simple function
+    that does the natural lookup operation, but return any functions we
+    receive as they are.
+    """
+    # if the key is a string, then the "keyfunc" is just a basic lookup
+    # operation -- return that
+    if isinstance(k, six.string_types):
+        def lookup(x):
+            return x[k]
+
+        return lookup
+    # otherwise, the key must be a function which is executed on the item
+    # to produce a value -- return it verbatim
+    return k
+
 def configure_log():
    """ Congigure logging """
    logfile = os.path.join(LOGPATH, 'dsglobus-app.log')
