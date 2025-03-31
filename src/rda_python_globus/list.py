@@ -71,7 +71,7 @@ def ls_command(
     ls_params = {}
 
     if path:
-        ls_params.update{"path": path}
+        ls_params.update({"path": path})
     if filter:
         ls_params.update({"filter": "name:{}".format(filter)})	
 
