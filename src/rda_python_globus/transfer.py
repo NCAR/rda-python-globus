@@ -37,44 +37,6 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
 	return transfer_data
 
-def submit_transfer(data):
-	""" General data transfer to RDA endpoints.  Input should be JSON formatted input 
-	    if transferring multiple files in batch mode. """
-
-	tc = transfer_client()
-		
-	transfer_data = TransferData(transfer_client=tc,
-							     source_endpoint=source_endpoint,
-							     destination_endpoint=destination_endpoint,
-							     label=label,
-							     verify_checksum=verify_checksum)
-
-	for i in range(len(files)):
-		source_file = files[i]['source_file']
-		dest_file = files[i]['destination_file']		
-		transfer_data.add_item(source_file, dest_file)
-
-	try:
-		response = tc.submit_transfer(transfer_data)
-		task_id = response['task_id']
-	except GlobusAPIError as e:
-		msg = ("[submit_rda_transfer] Globus API Error\n"
-		       "HTTP status: {}\n"
-		       "Error code: {}\n"
-		       "Error message: {}").format(e.http_status, e.code, e.message)
-		logger.error(msg)
-		raise e
-	except NetworkError:
-		logger.error(("[submit_rda_transfer] Network Failure. "
-                   "Possibly a firewall or connectivity issue"))
-		raise
-	
-	msg = "{0}\nTask ID: {1}".format(response['message'], task_id)
-	logger.info(msg)
-	print(msg)
-	
-	return response
-
 @click.command(
     "transfer",
     help="Submit a Globus transfer task.",
@@ -176,10 +138,23 @@ def transfer_command(
 
         # exit safely
 		return
-    
-	res = transfer_client.submit_transfer(transfer_data)
-	task_id = res["task_id"]
-	msg = "{0}\nTask ID: {1}".format(transfer_result['message'], task_id)
+
+	try:
+		res = tc.submit_transfer(transfer_data)
+		task_id = res["task_id"]
+	except GlobusAPIError as e:
+		msg = ("[submit_rda_transfer] Globus API Error\n"
+		       "HTTP status: {}\n"
+		       "Error code: {}\n"
+		       "Error message: {}").format(e.http_status, e.code, e.message)
+		logger.error(msg)
+		raise e
+	except NetworkError:
+		logger.error("[submit_rda_transfer] Network Failure. "
+		               "Possibly a firewall or connectivity issue")
+		raise
+	
+	msg = "{0}\nTask ID: {1}".format(res['message'], task_id)
 	logger.info(msg)
 	
 	click.echo(f"""{msg}""")
