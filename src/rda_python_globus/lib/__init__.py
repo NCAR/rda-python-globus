@@ -3,6 +3,7 @@ import os
 import logging
 import re
 import typing as t
+import six
 
 import click
 
