@@ -56,6 +56,62 @@ def process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
     obj = json.loads(json_str)
     return obj
 
+def print_table(iterable, headers_and_keys, print_headers=True):
+    """ 
+    Print an iterable in table format.  
+    The iterable may not be safe to walk multiple times, so we must walk it
+    only once -- however, to let us write things naturally, convert it to a
+    list and we can assume it is safe to walk repeatedly
+
+    iterable = list(iterable)
+
+    # extract headers and keys as separate lists
+    headers = [h for (h, k) in headers_and_keys]
+    keys = [k for (h, k) in headers_and_keys]
+
+    # convert all keys to keyfuncs
+    keyfuncs = [_key_to_keyfunc(key) for key in keys]
+
+    # use the iterable to find the max width of an element for each column, in
+    # the same order as the headers_and_keys array
+    # use a special function to handle empty iterable
+    """ 
+
+    def get_max_colwidth(kf):
+        def _safelen(x):
+            try:
+                return len(x)
+            except TypeError:
+                return len(str(x))
+        lengths = [_safelen(kf(i)) for i in iterable]
+        if not lengths:
+            return 0
+        else:
+             return max(lengths)
+
+    widths = [get_max_colwidth(kf) for kf in keyfuncs]
+
+    # handle the case in which the column header is the widest thing
+    widths = [max(w, len(h)) for w, h in zip(widths, headers)]
+
+    # create a format string based on column widths
+    format_str = " | ".join("{:" + str(w) + "}" for w in widths)
+
+    def none_to_null(val):
+        if val is None:
+            return "NULL"
+        return val
+
+    # print headers
+    if print_headers:
+        print(format_str.format(*[h for h in headers]))
+        print(format_str.format(*["-" * w for w in widths]))
+    # print the rows of data
+    for i in iterable:
+        print(format_str.format(*[none_to_null(kf(i)) for kf in keyfuncs]))
+
+    return
+
 def configure_log():
    """ Congigure logging """
    logfile = os.path.join(LOGPATH, 'dsglobus-app.log')
@@ -71,6 +127,7 @@ __all__ = (
     "validate_dsid",
     "prettyprint_json",
     "process_json_stream",
+    "print_table",
     "configure_log",
     "token_storage_adapter",
     "auth_client",
