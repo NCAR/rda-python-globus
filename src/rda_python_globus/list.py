@@ -48,7 +48,7 @@ def ls_command(
     """ 
     List the contents of a directory on an endpoint.  If no path is given, the root directory of the endpoint will be used.
 
-    \b	
+    \b
 	=== Filtering
 
     --filter takes "filter patterns" subject to the following rules:
