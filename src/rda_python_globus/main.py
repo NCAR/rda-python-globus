@@ -11,6 +11,10 @@ configure_log()
 @click.group("dsglobus")
 @common_options
 def cli():
+    """ 
+    DSGLOBUS: A command-line tool for Globus data transfer and management of files 
+    archived in the NSF NCAR Research Data Archive.
+    """
     pass
 
 # cli workflow
