@@ -62,6 +62,7 @@ def print_table(iterable, headers_and_keys, print_headers=True):
     The iterable may not be safe to walk multiple times, so we must walk it
     only once -- however, to let us write things naturally, convert it to a
     list and we can assume it is safe to walk repeatedly
+    """
 
     iterable = list(iterable)
 
@@ -75,8 +76,6 @@ def print_table(iterable, headers_and_keys, print_headers=True):
     # use the iterable to find the max width of an element for each column, in
     # the same order as the headers_and_keys array
     # use a special function to handle empty iterable
-    """ 
-
     def get_max_colwidth(kf):
         def _safelen(x):
             try:
