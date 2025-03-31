@@ -45,21 +45,28 @@ def ls_command(
 	path: str,
     filter: str
 ) -> None:
-    """ List endpoint directory contents 
-	
-	=== Filtering
-	List files and dirs on a specific path on an endpoint, filtering in various ways.
+    """ 
+    List the contents of a directory on an endpoint.  If no path is given, the root directory of the endpoint will be used.
 
+    \b	
+	=== Filtering
+
+    --filter takes "filter patterns" subject to the following rules:
+
+    \b
     Filter patterns must start with "=", "~", "!", or "!~"
     If none of these are given, "=" will be used
 
+    \b
     "=" does exact matching
     "~" does regex matching, supporting globs (*)
     "!" does inverse "=" matching
     "!~" does inverse "~" matching
 
+    \b
     "~*.txt" matches all .txt files, for example
     
+    \b
 	$ dsglobus ls -ep <endpoint> -p <path> --filter '~*.txt'  # all txt files
 	$ dsglobus ls -ep <endpoint> -p <path> --filter '!~file1.*'  # not starting in "file1."
 	$ dsglobus ls -ep <endpoint> -p <path> --filter '~*ile3.tx*'  # anything with "ile3.tx"
