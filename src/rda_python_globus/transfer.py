@@ -59,7 +59,7 @@ Examples:
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
 
 \b
-$ dsglobus transfer --source-endpoint rda-glade --destination-endpoint rda-quasar --source-file /data/ds999.9/file.txt --destination-file /ds999.9/file.txt	  			 
+$ dsglobus transfer --source-endpoint rda-glade --destination-endpoint rda-quasar --source-file /data/d999009/file.txt --destination-file /d999009/file.txt	  			 
 
 2. Transfer a batch of files from a JSON file:
 
@@ -72,13 +72,12 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
 $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
 {
   "files": [
-    {"source_file": "/data/ds999.9/file1.tar", "destination_file": "/ds999.9/file1.tar"},
-    {"source_file": "/data/ds999.9/file2.tar", "destination_file": "/ds999.9/file2.tar"},
-    {"source_file": "/data/ds999.9/file3.tar", "destination_file": "/ds999.9/file3.tar"}
+    {"source_file": "/data/d999009/file1.tar", "destination_file": "/d999009/file1.tar"},
+    {"source_file": "/data/d999009/file2.tar", "destination_file": "/d999009/file2.tar"},
+    {"source_file": "/data/d999009/file3.tar", "destination_file": "/d999009/file3.tar"}
   ]
 }
 <Ctrl+D>
-
 ''',
 )
 @click.option(
