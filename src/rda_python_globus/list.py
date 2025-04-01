@@ -27,7 +27,7 @@ DEFAULT_ENDPOINT = ENDPOINT_ALIASES['rda-quasar']
     type=str,
 	default=DEFAULT_ENDPOINT,
     show_default=True,
-    help="Endpoint ID or name.",
+    help="Endpoint ID or name (alias).",
 )
 @click.option(
     "--path",

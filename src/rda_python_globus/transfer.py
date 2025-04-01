@@ -43,7 +43,7 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
 @click.command(
     "transfer",
-    help="Submit a Globus transfer task.",
+    short_help="Submit a Globus transfer task.",
     epilog='''
 \b
 ===========================
