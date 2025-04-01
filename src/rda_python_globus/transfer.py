@@ -2,6 +2,7 @@ import sys
 import json
 import typing as t
 import textwrap
+import re
 
 import click
 from globus_sdk import TransferData, GlobusAPIError, NetworkError
@@ -11,13 +12,15 @@ from .lib import (
 	task_submission_options,
     transfer_client,
 	process_json_stream,
-	TRANSFER_SOURCE,
-    TRANSFER_DESTINATION,
+	valid_uuid,
+	ENDPOINT_ALIASES,
 )
 
 import logging
 logger = logging.getLogger(__name__)
 
+TRANSFER_SOURCE = "rda-glade"
+TRANSFER_DESTINATION = "rda-quasar"
 DEFAULT_LABEL = "RDA Quasar transfer"
 
 def add_batch_to_transfer_data(batch, transfer_data):
@@ -76,7 +79,7 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
     default=TRANSFER_SOURCE,
     show_default=True,
 	required=True,
-    help="Source endpoint ID or name.",
+    help="Source endpoint ID or name (alias).",
 )
 @click.option(
     "--destination-endpoint",
@@ -84,7 +87,7 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
     default=TRANSFER_DESTINATION,
     show_default=True,
 	required=True,
-    help="Destination endpoint ID or name.",
+    help="Destination endpoint ID or name (alias).",
 )
 @click.option(
 	"--source-file",
@@ -128,13 +131,36 @@ def transfer_command(
 	dry_run: bool,
 	label: str
 	) -> None:
-	"""Submit a Globus transfer task."""
+	"""
+	Submit a Globus transfer task.
+	
+	\b
+	Valid RDA endpoint names:
+	- rda-glade
+	- rda-quasar
+	- rda-quasar-drdata
+	"""
 	
 	tc = transfer_client()
+
+	if source_endpoint in ENDPOINT_ALIASES:
+		source_endpoint_id = ENDPOINT_ALIASES[source_endpoint]
+	else:
+		source_endpoint_id = source_endpoint
+	if destination_endpoint in ENDPOINT_ALIASES:
+		destination_endpoint_id = ENDPOINT_ALIASES[destination_endpoint]
+	else:
+		destination_endpoint_id = destination_endpoint
+	if not valid_uuid(source_endpoint_id):
+		logger.error("[transfer_command] Invalid source endpoint ID: {0}".format(source_endpoint_id))
+		sys.exit(1)
+	if not valid_uuid(destination_endpoint_id):
+		logger.error("[transfer_command] Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
+		sys.exit(1)
 		
 	transfer_data = TransferData(transfer_client=tc,
-							     source_endpoint=source_endpoint,
-							     destination_endpoint=destination_endpoint,
+							     source_endpoint=source_endpoint_id,
+							     destination_endpoint=destination_endpoint_id,
 							     label=DEFAULT_LABEL,
 							     verify_checksum=verify_checksum)
 
@@ -145,8 +171,8 @@ def transfer_command(
 		
 	if dry_run:
 		data = transfer_data.data
-		msg = "Source endpoint: {0}".format(data['source_endpoint'])
-		msg += "\nDestination endpoint: {0}".format(data['destination_endpoint'])
+		msg += "\nSource endpoint ID: {0}".format(data['source_endpoint'])
+		msg += "\nDestination endpoint ID: {0}".format(data['destination_endpoint'])
 		msg += "\nLabel: {0}".format(data['label'])
 		msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
 		msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))

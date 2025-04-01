@@ -9,11 +9,13 @@ from .lib import (
     common_options,
     print_table, 
     transfer_client,
-	TRANSFER_DESTINATION,
+	ENDPOINT_ALIASES,
 )
 
 import logging
 logger = logging.getLogger(__name__)
+
+DEFAULT_ENDPOINT = ENDPOINT_ALIASES['rda-quasar']
 
 @click.command(
     "ls",
@@ -23,7 +25,7 @@ logger = logging.getLogger(__name__)
     "--endpoint",
     "-ep",
     type=str,
-	default=TRANSFER_DESTINATION,
+	default=DEFAULT_ENDPOINT,
     show_default=True,
     help="Endpoint ID or name.",
 )

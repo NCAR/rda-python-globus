@@ -8,7 +8,7 @@ import six
 import click
 
 from .auth import token_storage_adapter, auth_client, transfer_client
-from .config import TRANSFER_SOURCE, TRANSFER_DESTINATION
+from .config import ENDPOINT_ALIASES
 
 RDA_BASE_PATH = '/glade/campaign/collections/rda'
 LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
@@ -28,6 +28,11 @@ def task_submission_options(f):
     f = click.option("--label", "-l", default="", help="Label for the task")(f)
 
     return f
+
+def valid_uuid(uuid):
+    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z', re.I)
+    match = regex.match(uuid)
+    return bool(match)
 
 def validate_dsid(ctx, param, dsid):
     """ Validate dsid from command line input """
@@ -151,6 +156,7 @@ __all__ = (
     "common_options",
     "task_submission_options",
     "validate_dsid",
+    "valid_uuid",
     "prettyprint_json",
     "process_json_stream",
     "print_table",
@@ -158,7 +164,6 @@ __all__ = (
     "token_storage_adapter",
     "auth_client",
     "transfer_client",
-    "TRANSFER_SOURCE",
-    "TRANSFER_DESTINATION",
+    "ENDPOINT_ALIASES",
     "CustomEpilog",
 )
