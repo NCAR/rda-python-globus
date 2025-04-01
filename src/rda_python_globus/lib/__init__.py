@@ -140,6 +140,13 @@ def configure_log():
 
    return
 
+class CustomEpilog(click.Group):
+    def format_epilog(self, ctx, formatter):
+        if self.epilog:
+            formatter.write_paragraph()
+            for line in self.epilog.split('\n'):
+                formatter.write_text(line)
+
 __all__ = (
     "common_options",
     "task_submission_options",
@@ -153,4 +160,5 @@ __all__ = (
     "transfer_client",
     "TRANSFER_SOURCE",
     "TRANSFER_DESTINATION",
+    "CustomEpilog",
 )
