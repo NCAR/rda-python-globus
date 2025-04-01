@@ -69,7 +69,7 @@ def print_task_detail(client: TransferClient, task_id: uuid.UUID) -> None:
     help="A Globus task ID (UUID).",
 )
 @common_options
-def show_task(
+def show_task_command(
     task_id: uuid.UUID,
 ) -> None:
     """
