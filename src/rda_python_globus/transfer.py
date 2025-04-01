@@ -44,8 +44,8 @@ def add_batch_to_transfer_data(batch, transfer_data):
     epilog='''
 \b
 ===========================
-
 Examples:
+
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
 
 \b
