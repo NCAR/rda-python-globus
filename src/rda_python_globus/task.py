@@ -47,7 +47,7 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     ("Destination Path", "destination_path"),
 ]
 
-def print_task_detail(task_id: uuid.UUID) -> Optional[dict]:
+def print_task_detail(task_id) -> Optional[dict]:
     """
     Print detailed information about a Globus task.
     """
@@ -80,7 +80,7 @@ def print_task_detail(task_id: uuid.UUID) -> Optional[dict]:
     help="A Globus task ID (UUID).",
 )
 @common_options
-def show_task(task_id: uuid.UUID):
+def show_task(task_id):
     """
     Print information including status about a Globus task.  The task may
     be pending, completed, failed, or in progress.
