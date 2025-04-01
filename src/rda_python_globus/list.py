@@ -1,7 +1,3 @@
-import json
-import typing as t
-import textwrap
-
 import click
 from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
