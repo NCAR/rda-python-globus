@@ -122,81 +122,82 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
 @common_options
 @task_submission_options
 def transfer_command(
-	source_endpoint: str,
-	destination_endpoint: str,
-	source_file: str,
-	destination_file: str,
-	verify_checksum: bool,
-	batch: t.TextIO,
-	dry_run: bool,
-	label: str
-	) -> None:
-	"""
-	Submit a Globus transfer task.
-	
-	\b
-	Valid RDA endpoint names:
-	- rda-glade
-	- rda-quasar
-	- rda-quasar-drdata
-	"""
-	
-	tc = transfer_client()
+    source_endpoint: str,
+    destination_endpoint: str,
+    source_file: str,
+    destination_file: str,
+    verify_checksum: bool,
+    batch: t.TextIO,
+    dry_run: bool,
+    label: str
+    ) -> None:
+    """
+    Submit a Globus transfer task.
 
-	if source_endpoint in ENDPOINT_ALIASES:
-		source_endpoint_id = ENDPOINT_ALIASES[source_endpoint]
-	else:
-		source_endpoint_id = source_endpoint
-	if destination_endpoint in ENDPOINT_ALIASES:
-		destination_endpoint_id = ENDPOINT_ALIASES[destination_endpoint]
-	else:
-		destination_endpoint_id = destination_endpoint
-	if not valid_uuid(source_endpoint_id):
-		logger.error("[transfer_command] Invalid source endpoint ID: {0}".format(source_endpoint_id))
-		sys.exit(1)
-	if not valid_uuid(destination_endpoint_id):
-		logger.error("[transfer_command] Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
-		sys.exit(1)
-		
-	transfer_data = TransferData(transfer_client=tc,
-							     source_endpoint=source_endpoint_id,
-							     destination_endpoint=destination_endpoint_id,
-							     label=DEFAULT_LABEL,
-							     verify_checksum=verify_checksum)
+    \b
+    Valid RDA endpoint names:
+    - rda-glade
+    - rda-quasar
+    - rda-quasar-drdata
+    """
 
-	if batch:
-		transfer_data = add_batch_to_transfer_data(batch, transfer_data)
-	else:
-		transfer_data.add_item(source_file, destination_file)
+    tc = transfer_client()
+
+    if source_endpoint in ENDPOINT_ALIASES:
+        source_endpoint_id = ENDPOINT_ALIASES[source_endpoint]
+    else:
+        source_endpoint_id = source_endpoint
+    if destination_endpoint in ENDPOINT_ALIASES:
+        destination_endpoint_id = ENDPOINT_ALIASES[destination_endpoint]
+    else:
+        destination_endpoint_id = destination_endpoint
+    if not valid_uuid(source_endpoint_id):
+        logger.error("[transfer_command] Invalid source endpoint ID: {0}".format(source_endpoint_id))
+        sys.exit(1)
+    if not valid_uuid(destination_endpoint_id):
+        logger.error("[transfer_command] Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
+        sys.exit(1)
 		
-	if dry_run:
-		data = transfer_data.data
-		msg = "\nSource endpoint ID: {0}".format(data['source_endpoint'])
-		msg += "\nDestination endpoint ID: {0}".format(data['destination_endpoint'])
-		msg += "\nLabel: {0}".format(data['label'])
-		msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
-		msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))
-		click.echo(f"""{msg}""")
+    transfer_data = TransferData(
+        transfer_client=tc,
+        source_endpoint=source_endpoint_id,
+        destination_endpoint=destination_endpoint_id,
+        label=DEFAULT_LABEL,
+        verify_checksum=verify_checksum
+    )
+
+    if batch:
+        transfer_data = add_batch_to_transfer_data(batch, transfer_data)
+    else:
+        transfer_data.add_item(source_file, destination_file)
+		
+    if dry_run:
+        data = transfer_data.data
+        msg = "\nSource endpoint ID: {0}".format(data['source_endpoint'])
+        msg += "\nDestination endpoint ID: {0}".format(data['destination_endpoint'])
+        msg += "\nLabel: {0}".format(data['label'])
+        msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
+        msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))
+        click.echo(f"""{msg}""")
 
         # exit safely
-		return
+        return
 
-	try:
-		res = tc.submit_transfer(transfer_data)
-		task_id = res["task_id"]
-	except GlobusAPIError as e:
-		msg = ("[submit_rda_transfer] Globus API Error\n"
-		       "HTTP status: {}\n"
-		       "Error code: {}\n"
-		       "Error message: {}").format(e.http_status, e.code, e.message)
-		logger.error(msg)
-		raise e
-	except NetworkError:
-		logger.error("[submit_rda_transfer] Network Failure. "
-		               "Possibly a firewall or connectivity issue")
-		raise
+    try:
+        res = tc.submit_transfer(transfer_data)
+        task_id = res["task_id"]
+    except GlobusAPIError as e:
+        msg = ("[submit_rda_transfer] Globus API Error\n"
+               "HTTP status: {}\n"
+               "Error code: {}\n"
+               "Error message: {}").format(e.http_status, e.code, e.message)
+        logger.error(msg)
+        raise e
+    except NetworkError:
+        logger.error("[submit_rda_transfer] Network Failure. "
+               "Possibly a firewall or connectivity issue")
+        raise
 	
-	msg = "{0}\nTask ID: {1}".format(res['message'], task_id)
-	logger.info(msg)
-	
-	click.echo(f"""{msg}""")
+    msg = "{0}\nTask ID: {1}".format(res['message'], task_id)
+    logger.info(msg)
+    click.echo(f"""{msg}""")
