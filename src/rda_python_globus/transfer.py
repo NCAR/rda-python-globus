@@ -83,11 +83,13 @@ def add_batch_to_transfer_data(batch, transfer_data):
 	type=click.File('r'),
     help=textwrap.dedent(
 		"""\
+		\b
         Accept a batch of source/destination file pairs from a file. 
 		Use '-' to read from stdin and close the stream with 'Ctrl+D'.  
 		Uses --source-endpoint and --destination-endpoint as passed 
 		on the command line.
 		
+		\b
 		Uses JSON formatted input.  Example:
 		$ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
         {
