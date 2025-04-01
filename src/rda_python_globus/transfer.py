@@ -110,6 +110,7 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
 )
 @click.option(
 	"--verify-checksum/--no-verify-checksum",
+    "-vc/-nvc",
     default=True,
     show_default=True,
     help="Verify checksums of files transferred.",
