@@ -1,6 +1,7 @@
 import click
 import uuid
-from globus_sdk import TransferClient, GlobusAPIError, NetworkError
+from typing import Optional
+from globus_sdk import GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
@@ -46,8 +47,18 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     ("Destination Path", "destination_path"),
 ]
 
-def print_task_detail(client: TransferClient, task_id: uuid.UUID) -> None:
-    task_info = client.get_task(task_id)
+def print_task_detail(task_id: uuid.UUID) -> Optional[dict]:
+    """
+    Print detailed information about a Globus task.
+    """
+    tc = transfer_client()
+    try:
+        task_info = tc.get_task(task_id)
+    except (GlobusAPIError, NetworkError) as e:
+        logger.error(f"Error: {e}")
+        click.echo("Failed to get task details.")
+        return None
+
     fields=(
             COMMON_FIELDS
             + (COMPLETED_FIELDS if task_info["completion_time"] else ACTIVE_FIELDS)
@@ -75,9 +86,6 @@ def show_task(task_id: uuid.UUID) -> None:
     be pending, completed, failed, or in progress.
     """
 
-    tc = transfer_client()
-    try:
-        task_info = print_task_detail(tc, task_id)
-    except (GlobusAPIError, NetworkError) as e:
-        logger.error(f"Error: {e}")
-        click.echo("Failed to get task details.")
+    task_info = print_task_detail(task_id)
+    if not task_info:
+        click.echo("No task information available.")
