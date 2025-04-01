@@ -1,6 +1,6 @@
 import click
 import uuid
-from globus_sdk import GlobusAPIError, NetworkError
+from globus_sdk import TransferClient, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
@@ -46,7 +46,7 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     ("Destination Path", "destination_path"),
 ]
 
-def print_task_detail(client: globus_sdk.TransferClient, task_id: uuid.UUID) -> None:
+def print_task_detail(client: TransferClient, task_id: uuid.UUID) -> None:
     task_info = client.get_task(task_id)
     fields=(
             COMMON_FIELDS
