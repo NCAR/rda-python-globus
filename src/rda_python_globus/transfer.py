@@ -109,9 +109,7 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
     help="Path to destination file name, relative to destination endpoint host path.",
 )
 @click.option(
-	"--verify-checksum",
-	"-vc",
-	is_flag=True,
+	"--verify-checksum/--no-verify-checksum",
     default=True,
     show_default=True,
     help="Verify checksums of files transferred.",
