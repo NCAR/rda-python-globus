@@ -171,7 +171,7 @@ def transfer_command(
 		
 	if dry_run:
 		data = transfer_data.data
-		msg += "\nSource endpoint ID: {0}".format(data['source_endpoint'])
+		msg = "\nSource endpoint ID: {0}".format(data['source_endpoint'])
 		msg += "\nDestination endpoint ID: {0}".format(data['destination_endpoint'])
 		msg += "\nLabel: {0}".format(data['label'])
 		msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
