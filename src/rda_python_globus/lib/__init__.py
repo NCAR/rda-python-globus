@@ -30,7 +30,7 @@ def task_submission_options(f):
     return f
 
 def valid_uuid(uuid):
-    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z', re.I)
+    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12}\Z', re.I)
     match = regex.match(uuid)
     return bool(match)
 
@@ -141,7 +141,14 @@ def configure_log():
    logfile = os.path.join(LOGPATH, 'dsglobus-app.log')
    loglevel = 'INFO'
    format = '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
-   logging.basicConfig(filename=logfile, level=loglevel, format=format)
+   logging.basicConfig(
+       level=loglevel, 
+       format=format,
+       handlers=[
+           logging.StreamHandler(),
+           logging.FileHandler(logfile)
+       ]
+    )
 
    return
 

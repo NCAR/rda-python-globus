@@ -153,10 +153,10 @@ def transfer_command(
     else:
         destination_endpoint_id = destination_endpoint
     if not valid_uuid(source_endpoint_id):
-        logger.error("[transfer_command] Invalid source endpoint ID: {0}".format(source_endpoint_id))
+        logger.error("Invalid source endpoint ID: {0}".format(source_endpoint_id))
         sys.exit(1)
     if not valid_uuid(destination_endpoint_id):
-        logger.error("[transfer_command] Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
+        logger.error("Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
         sys.exit(1)
 		
     transfer_data = TransferData(
