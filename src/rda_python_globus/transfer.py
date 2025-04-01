@@ -47,6 +47,13 @@ def add_batch_to_transfer_data(batch, transfer_data):
     epilog='''
 \b
 ===========================
+Valid RDA endpoint names:
+- rda-glade
+- rda-quasar
+- rda-quasar-drdata
+
+\b
+===========================
 Examples:
 
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
@@ -54,7 +61,12 @@ Examples:
 \b
 $ dsglobus transfer --source-endpoint rda-glade --destination-endpoint rda-quasar --source-file /data/ds999.9/file.txt --destination-file /ds999.9/file.txt	  			 
 
-2. Transfer multiple files with the --batch option in JSON format.  Use '-' to read from stdin, and close the stream with 'Ctrl+D':
+2. Transfer a batch of files from a JSON file:
+
+\b				   
+$ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch /path/to/batch.json
+
+3. Transfer multiple files with the --batch option in JSON format.  Use '-' to read from stdin, and close the stream with 'Ctrl+D':
 
 \b
 $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
@@ -66,11 +78,7 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
   ]
 }
 <Ctrl+D>
-					   
-3. Transfer a batch of files from a JSON file:
 
-\b				   
-$ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch /path/to/batch.json
 ''',
 )
 @click.option(
@@ -133,12 +141,6 @@ def transfer_command(
     ) -> None:
     """
     Submit a Globus transfer task.
-
-    \b
-    Valid RDA endpoint names:
-    - rda-glade
-    - rda-quasar
-    - rda-quasar-drdata
     """
 
     tc = transfer_client()
