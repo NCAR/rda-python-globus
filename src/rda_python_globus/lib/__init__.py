@@ -23,7 +23,7 @@ def task_submission_options(f):
     f = click.option(
         "--dry-run",
         is_flag=True,
-        help="Don't actually submit the task, print submission data instead",
+        help="Don't actually submit the task, print submission data instead as a sanity check.",
     )(f)
     f = click.option("--label", "-l", default="", help="Label for the task")(f)
 

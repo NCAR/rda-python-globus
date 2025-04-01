@@ -41,6 +41,14 @@ def add_batch_to_transfer_data(batch, transfer_data):
 @click.command(
     "transfer",
     help="Submit a Globus transfer task.",
+    epilog=textwrap.dedent('''\
+    ======================================================================================
+    Example:
+    - Transfer a single file from GLADE to the NCAR Quasar tape system:
+
+	\b
+    dsglobus transfer --source-endpoint rda-glade --destination-endpoint rda-quasar --source-file /data/ds999.9/file.txt --destination-file /ds999.9/file.txt	  			 
+    '''),
 )
 @click.option(
     "--source-endpoint",
@@ -81,27 +89,25 @@ def add_batch_to_transfer_data(batch, transfer_data):
 @click.option(
 	"--batch",
 	type=click.File('r'),
-    help=textwrap.dedent(
-		"""\
-		\b
+    help=textwrap.dedent("""\
+        \b
         Accept a batch of source/destination file pairs from a file. 
-		Use '-' to read from stdin and close the stream with 'Ctrl+D'.  
-		Uses --source-endpoint and --destination-endpoint as passed 
+        Use '-' to read from stdin and close the stream with 'Ctrl+D'.  
+        Uses --source-endpoint and --destination-endpoint as passed 
 		on the command line.
-		
-		\b
-		Uses JSON formatted input.  Example:
-		$ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
+
+        \b
+        Uses JSON formatted input.  Example:
+        $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DESTINATION_ENDPOINT --batch -
         {
             "files": [
-                {"source_file": "/data/ds999.9/file1.tar", "destination_file": "/ds999.9/file1.tar"},
-	            {"source_file": "/data/ds999.9/file2.tar", "destination_file": "/ds999.9/file2.tar"},
-	            {"source_file": "/data/ds999.9/file3.tar", "destination_file": "/ds999.9/file3.tar"}
+				{"source_file": "/data/ds999.9/file1.tar", "destination_file": "/ds999.9/file1.tar"},
+				{"source_file": "/data/ds999.9/file2.tar", "destination_file": "/ds999.9/file2.tar"},
+				{"source_file": "/data/ds999.9/file3.tar", "destination_file": "/ds999.9/file3.tar"}
             ]
         }
 		<Ctrl+D>
-"""
-    ),
+    """),
 )
 @common_options
 @task_submission_options
