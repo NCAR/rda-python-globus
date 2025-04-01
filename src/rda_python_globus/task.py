@@ -80,7 +80,7 @@ def print_task_detail(task_id: uuid.UUID) -> Optional[dict]:
     help="A Globus task ID (UUID).",
 )
 @common_options
-def show_task(task_id: uuid.UUID) -> None:
+def show_task(task_id: uuid.UUID):
     """
     Print information including status about a Globus task.  The task may
     be pending, completed, failed, or in progress.
