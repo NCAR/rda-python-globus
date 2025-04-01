@@ -1,3 +1,9 @@
+""" RDA Quasar Client ID """
+CLIENT_ID = "05c2f58b-c667-4fc4-94fb-546e1cd8f41f"
+
+""" Token storage configuration """
+CLIENT_TOKEN_CONFIG = '/glade/u/home/rdadata/lib/python/globus_rda_quasar_tokens.json'
+
 """ Endpoint IDs """
 RDA_DATASET_ENDPOINT = 'b6b5d5e8-eb14-4f6b-8928-c02429d67998'
 RDA_DSRQST_ENDPOINT = 'e1e2997e-d794-4868-838e-d4b8d5590853'
