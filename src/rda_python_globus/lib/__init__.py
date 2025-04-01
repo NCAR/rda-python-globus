@@ -59,8 +59,30 @@ def process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
             continue
         json_str += line
     
-    obj = json.loads(json_str)
+    # Remove trailing commas
+    json_str = remove_trailing_comma(json_str)
+    # Convert single quote keys/values to double quotes
+    json_str = json_str.replace("'", '"')
+
+    # Parse the JSON string into a Python object
+    try:
+        obj = json.loads(json_str)
+    except json.JSONDecodeError as e:
+        raise click.BadParameter(f"Invalid JSON format at line {lineno + 1}: {e}")
+    
     return obj
+
+def remove_trailing_comma(json_string):
+    """ Removes trailing commas from a JSON string.
+
+    Args:
+      json_string: The JSON string to process.
+
+    Returns:
+      The JSON string with trailing commas removed, or the original string if no 
+      trailing comma is found.
+    """
+    return re.sub(r",\s*(?=[}\]])", "", json_string)
 
 def print_table(iterable, headers_and_keys, print_headers=True):
     """ 
