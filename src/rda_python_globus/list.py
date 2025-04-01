@@ -9,13 +9,11 @@ from .lib import (
     common_options,
     print_table, 
     transfer_client,
-	ENDPOINT_ALIASES,
+    validate_endpoint,
 )
 
 import logging
 logger = logging.getLogger(__name__)
-
-DEFAULT_ENDPOINT = ENDPOINT_ALIASES['rda-quasar']
 
 @click.command(
     "ls",
@@ -25,8 +23,7 @@ DEFAULT_ENDPOINT = ENDPOINT_ALIASES['rda-quasar']
     "--endpoint",
     "-ep",
     type=str,
-	default=DEFAULT_ENDPOINT,
-    show_default=True,
+    callback=validate_endpoint,
     help="Endpoint ID or name (alias).",
 )
 @click.option(

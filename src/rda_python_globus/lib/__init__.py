@@ -42,6 +42,19 @@ def validate_dsid(ctx, param, dsid):
     else:
         raise click.BadParameter("format must be 'dnnnnnn'")
 
+def validate_endpoint(ctx, param, endpoint):
+    """ Validate endpoint from command line input """
+
+    if valid_uuid(endpoint):
+        return endpoint
+
+    # Check if the endpoint is in the aliases
+    # If it is, return the corresponding ID
+    if endpoint in ENDPOINT_ALIASES:
+        return ENDPOINT_ALIASES[endpoint]
+    else:
+        raise click.BadParameter(f"Invalid endpoint name/alias: {endpoint}. Valid names are: {', '.join(ENDPOINT_ALIASES.keys())}")    
+
 def prettyprint_json(obj, fp=None):
     if fp:
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
@@ -186,6 +199,7 @@ __all__ = (
     "task_submission_options",
     "validate_dsid",
     "valid_uuid",
+    "validate_endpoint",
     "prettyprint_json",
     "process_json_stream",
     "print_table",

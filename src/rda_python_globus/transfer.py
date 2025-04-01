@@ -2,7 +2,6 @@ import sys
 import json
 import typing as t
 import textwrap
-import re
 
 import click
 from globus_sdk import TransferData, GlobusAPIError, NetworkError
@@ -12,15 +11,11 @@ from .lib import (
 	task_submission_options,
     transfer_client,
 	process_json_stream,
-	valid_uuid,
-	ENDPOINT_ALIASES,
+    validate_endpoint,
 )
 
 import logging
 logger = logging.getLogger(__name__)
-
-TRANSFER_SOURCE = "rda-glade"
-TRANSFER_DESTINATION = "rda-quasar"
 
 def add_batch_to_transfer_data(batch, transfer_data):
 	""" Add batch of files to transfer data object. """
@@ -82,17 +77,15 @@ $ dsglobus transfer --source-endpoint SOURCE_ENDPOINT --destination-endpoint DES
 @click.option(
     "--source-endpoint",
 	"-se",
-    default=TRANSFER_SOURCE,
-    show_default=True,
 	required=True,
+    callback=validate_endpoint,
     help="Source endpoint ID or name (alias).",
 )
 @click.option(
     "--destination-endpoint",
 	"-de",
-    default=TRANSFER_DESTINATION,
-    show_default=True,
 	required=True,
+    callback=validate_endpoint,
     help="Destination endpoint ID or name (alias).",
 )
 @click.option(
@@ -141,26 +134,11 @@ def transfer_command(
     """
 
     tc = transfer_client()
-
-    if source_endpoint in ENDPOINT_ALIASES:
-        source_endpoint_id = ENDPOINT_ALIASES[source_endpoint]
-    else:
-        source_endpoint_id = source_endpoint
-    if destination_endpoint in ENDPOINT_ALIASES:
-        destination_endpoint_id = ENDPOINT_ALIASES[destination_endpoint]
-    else:
-        destination_endpoint_id = destination_endpoint
-    if not valid_uuid(source_endpoint_id):
-        logger.error("Invalid source endpoint ID: {0}".format(source_endpoint_id))
-        sys.exit(1)
-    if not valid_uuid(destination_endpoint_id):
-        logger.error("Invalid destination endpoint ID: {0}".format(destination_endpoint_id))
-        sys.exit(1)
 		
     transfer_data = TransferData(
         transfer_client=tc,
-        source_endpoint=source_endpoint_id,
-        destination_endpoint=destination_endpoint_id,
+        source_endpoint=source_endpoint,
+        destination_endpoint=destination_endpoint,
         label=label,
         verify_checksum=verify_checksum
     )
