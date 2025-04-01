@@ -5,35 +5,29 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "rda_python_template"
-version = "1.0.0"
+name = "rda_python_globus"
+version = "0.0.31"
 authors = [
-  { name="Zaihua Ji", email="zji@ucar.edu" },
+  { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
-description = "RDA Python code template to create new and modify existing other RDA python packages"
+description = "Tools for managing Globus transfers supporting the NSF NCAR Research Data Archive"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
 ]
 dependencies = [
-  "rda_python_common",
+    "globus_sdk",
+    "click",
+    "pyyaml",
+    "six",
 ]
 
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools.package-data]
-"rda_python_tmplate" = ["hello_world.usg"]
-
 [project.urls]
-"Homepage" = "https://github.com/NCAR/rda-python-template"
+"Homepage" = "https://github.com/NCAR/rda-python-globus"
 
 [project.scripts]
-hello_world = "rda_python_template.hello_world:main"
+dsglobus = "rda_python_globus:cli"
