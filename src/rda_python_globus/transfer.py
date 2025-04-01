@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 TRANSFER_SOURCE = "rda-glade"
 TRANSFER_DESTINATION = "rda-quasar"
-DEFAULT_LABEL = "RDA Quasar transfer"
 
 def add_batch_to_transfer_data(batch, transfer_data):
 	""" Add batch of files to transfer data object. """
@@ -162,7 +161,7 @@ def transfer_command(
         transfer_client=tc,
         source_endpoint=source_endpoint_id,
         destination_endpoint=destination_endpoint_id,
-        label=DEFAULT_LABEL,
+        label=label,
         verify_checksum=verify_checksum
     )
 
@@ -199,5 +198,4 @@ def transfer_command(
         raise
 	
     msg = "{0}\nTask ID: {1}".format(res['message'], task_id)
-    logger.info(msg)
     click.echo(f"""{msg}""")
