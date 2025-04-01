@@ -69,9 +69,7 @@ def print_task_detail(client: TransferClient, task_id: uuid.UUID) -> None:
     help="A Globus task ID (UUID).",
 )
 @common_options
-def show_task_command(
-    task_id: uuid.UUID,
-) -> None:
+def show_task(task_id: uuid.UUID) -> None:
     """
     Print information including status about a Globus task.  The task may
     be pending, completed, failed, or in progress.
