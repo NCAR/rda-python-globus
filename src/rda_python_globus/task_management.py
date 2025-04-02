@@ -48,8 +48,6 @@ SUCCESSFUL_TRANSFER_FIELDS = [
 ]
 
 @click.command(
-    "get-task",
-    "-gt",
     help="Show information about a Globus task.",
 )
 @click.argument(
@@ -57,7 +55,7 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     type=click.UUID,
 )
 @common_options
-def show_task_command(task_id):
+def get_task(task_id):
     if not task_id:
         click.echo("No task ID provided.")
         return
