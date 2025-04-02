@@ -63,7 +63,7 @@ def print_task_detail(task_info) -> None:
 @click.command(
     "get-task",
     "-gt",
-    help="Show information about a Globus task.",
+    short_help="Show information about a Globus task.",
 )
 @click.argument(
     "task-id",
