@@ -2,13 +2,13 @@ import click
 import logging
 import logging.handlers
 
-from . import transfer, list
+from . import task_management, transfer, list
 from .lib import common_options, configure_log, CustomEpilog
 
 logger = logging.getLogger(__name__)
 configure_log()
 
-@click.group("dsglobus", cls=CustomEpilog)
+@click.group("dsglobus")
 @common_options
 def cli():
     """ 
@@ -20,3 +20,4 @@ def cli():
 # cli workflow
 cli.add_command(transfer.transfer_command)
 cli.add_command(list.ls_command)
+task_management.add_commands(cli)

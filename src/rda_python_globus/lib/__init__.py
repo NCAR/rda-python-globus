@@ -60,6 +60,15 @@ def prettyprint_json(obj, fp=None):
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
 
+def colon_formatted_print(data, named_fields):
+    maxlen = max(len(n) for n, f in named_fields) + 1
+    for name, field in named_fields:
+        field_keyfunc = _key_to_keyfunc(field)
+        field_info = "{} {}".format((name + ":").ljust(maxlen), field_keyfunc(data))
+        click.echo(field_info)
+    click.echo("\n")
+    return
+
 def process_json_stream(stream: t.TextIO) -> t.Dict[str, t.Any]:
     """ Process a JSON stream from stdin and return a JSON object. """
     
@@ -202,6 +211,7 @@ __all__ = (
     "validate_endpoint",
     "prettyprint_json",
     "process_json_stream",
+    "colon_formatted_print",
     "print_table",
     "configure_log",
     "token_storage_adapter",
