@@ -63,18 +63,14 @@ def print_task_detail(task_info) -> None:
 @click.command(
     "get-task",
     "-gt",
-    short_help="Show information about a Globus task.",
+    help="Show information about a Globus task.",
 )
 @click.argument(
     "task-id",
     type=click.UUID,
 )
 @common_options
-def show_task_command(task_id: uuid.UUID) -> None:
-    """
-    Print information including status about a Globus task.  The task may
-    be pending, completed, failed, or in progress.
-    """
+def show_task_command(task_id):
     if not task_id:
         click.echo("No task ID provided.")
         return
