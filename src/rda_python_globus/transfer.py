@@ -53,26 +53,26 @@ Examples:
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
 
 \b
-$ dsglobus transfer \
-    --source-endpoint rda-glade \
-    --destination-endpoint rda-quasar \
-    --source-file /data/d999009/file.txt \
+$ dsglobus transfer \\
+    --source-endpoint rda-glade \\
+    --destination-endpoint rda-quasar \\
+    --source-file /data/d999009/file.txt \\
     --destination-file /d999009/file.txt	  			 
 
 2. Transfer a batch of files from a JSON file:
 
 \b				   
-$ dsglobus transfer \
-    --source-endpoint SOURCE_ENDPOINT \
-    --destination-endpoint DESTINATION_ENDPOINT \
+$ dsglobus transfer \\
+    --source-endpoint SOURCE_ENDPOINT \\
+    --destination-endpoint DESTINATION_ENDPOINT \\
     --batch /path/to/batch.json
 
 3. Transfer multiple files with the --batch option in JSON format.  Use '-' to read from stdin, and close the stream with 'Ctrl+D':
 
 \b
-$ dsglobus transfer \
-    --source-endpoint SOURCE_ENDPOINT \
-    --destination-endpoint DESTINATION_ENDPOINT \
+$ dsglobus transfer \\
+    --source-endpoint SOURCE_ENDPOINT \\
+    --destination-endpoint DESTINATION_ENDPOINT \\
     --batch -
 {
   "files": [
