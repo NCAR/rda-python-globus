@@ -20,4 +20,4 @@ def cli():
 # cli workflow
 cli.add_command(transfer.transfer_command)
 cli.add_command(list.ls_command)
-cli.add_command(task_management.get_task)
+task_management.add_commands(cli)
