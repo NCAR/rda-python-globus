@@ -207,7 +207,28 @@ def task_list(
 
     print_table(tasks, fields)
 
+@click.command(
+    help="Cancel a Globus task.",
+)
+@click.argument(
+    "task-id",
+    type=click.UUID,
+)
+@common_options
+def cancel_task(task_id: uuid.UUID) -> None:
+    if not task_id:
+        click.echo("No task ID provided.")
+        return
+    tc = transfer_client()
+    try:
+        res = tc.cancel_task(task_id)
+        click.echo(f"Task {task_id}\n{res['message']}")
+    except (GlobusAPIError, NetworkError) as e:
+        logger.error(f"Error: {e}")
+        click.echo("Failed to cancel task.")
+
 def add_commands(group):
     """ Add task management commands to a click group. """
     group.add_command(get_task)
     group.add_command(task_list)
+    group.add_command(cancel_task)
