@@ -8,7 +8,7 @@ from .lib import common_options, configure_log, CustomEpilog
 logger = logging.getLogger(__name__)
 configure_log()
 
-@click.group("dsglobus", cls=CustomEpilog)
+@click.group("dsglobus")
 @common_options
 def cli():
     """ 
