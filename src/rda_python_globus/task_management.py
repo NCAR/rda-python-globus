@@ -1,6 +1,5 @@
 import click
 import uuid
-from typing import Optional
 from globus_sdk import GlobusAPIError, NetworkError
 
 from .lib import (
@@ -55,7 +54,11 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     type=click.UUID,
 )
 @common_options
-def get_task(task_id):
+def get_task(task_id: uuid.UUID) -> None:
+    """ 
+    Print information including status about a Globus task.  The task may
+    be pending, completed, failed, or in progress.
+    """
     if not task_id:
         click.echo("No task ID provided.")
         return
