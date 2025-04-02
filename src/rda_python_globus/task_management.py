@@ -47,7 +47,7 @@ SUCCESSFUL_TRANSFER_FIELDS = [
 ]
 
 @click.command(
-    help="Show information about a Globus task.",
+    short_help="Show information about a Globus task.",
 )
 @click.argument(
     "task-id",
