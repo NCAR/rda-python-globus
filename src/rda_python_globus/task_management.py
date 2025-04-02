@@ -47,19 +47,6 @@ SUCCESSFUL_TRANSFER_FIELDS = [
     ("Destination Path", "destination_path"),
 ]
 
-def print_task_detail(task_info) -> None:
-    """
-    Print detailed information about a Globus task.
-    """
-    fields=(
-            COMMON_FIELDS
-            + (COMPLETED_FIELDS if task_info["completion_time"] else ACTIVE_FIELDS)
-            + (DELETE_FIELDS if task_info["type"] == "DELETE" else TRANSFER_FIELDS)
-    )
-    colon_formatted_print(task_info, fields)
-
-    return
-
 @click.command(
     "get-task",
     "-gt",
@@ -83,4 +70,10 @@ def show_task_command(task_id):
     if not task_info:
         click.echo("No task information available.")
         return
-    print_task_detail(task_info)
+
+    fields=(
+            COMMON_FIELDS
+            + (COMPLETED_FIELDS if task_info["completion_time"] else ACTIVE_FIELDS)
+            + (DELETE_FIELDS if task_info["type"] == "DELETE" else TRANSFER_FIELDS)
+    )
+    colon_formatted_print(task_info, fields)
