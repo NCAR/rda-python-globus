@@ -2,8 +2,8 @@ import click
 import logging
 import logging.handlers
 
-from . import task_management, transfer, list
-from .lib import common_options, configure_log, CustomEpilog
+from . import transfer, list, task_management, file_management
+from .lib import common_options, configure_log
 
 logger = logging.getLogger(__name__)
 configure_log()
@@ -21,3 +21,4 @@ def cli():
 cli.add_command(transfer.transfer_command)
 cli.add_command(list.ls_command)
 task_management.add_commands(cli)
+file_management.add_commands(cli)

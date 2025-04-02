@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
     "-ep",
     type=str,
     callback=validate_endpoint,
+    required=True,
     help="Endpoint ID or name (alias).",
 )
 @click.option(
