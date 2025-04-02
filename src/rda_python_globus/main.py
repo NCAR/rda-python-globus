@@ -2,7 +2,7 @@ import click
 import logging
 import logging.handlers
 
-from . import transfer, list, task
+from . import task_management, transfer, list
 from .lib import common_options, configure_log, CustomEpilog
 
 logger = logging.getLogger(__name__)
@@ -20,4 +20,4 @@ def cli():
 # cli workflow
 cli.add_command(transfer.transfer_command)
 cli.add_command(list.ls_command)
-cli.add_command(task.show_task_command)
+cli.add_command(task_management.show_task_command)
