@@ -57,6 +57,128 @@ def mkdir_command(
         raise click.Abort()
 
 @click.command(
+    "rename",
+    short_help="Rename a file or directory on a Globus endpoint.",
+    epilog='''
+\b
+=== Examples ===
+\b
+1. Rename a single file on the RDA Quasar endpoint:
+\b
+$ dsglobus rename \\
+    --endpoint rda-quasar \\
+    --old-path /d999009/old_file.txt \\
+    --new-path /d999009/new_file.txt
+\b
+2. Rename a directory on the RDA Quasar endpoint:
+\b
+$ dsglobus rename \\
+    --endpoint rda-quasar \\
+    --old-path /d999009/old_directory \\
+    --new-path /d999009/new_directory
+\b
+3. Rename a batch of files/directories on the RDA Quasar endpoint:
+\b
+$ dsglobus rename \\
+    --endpoint rda-quasar \\
+    --batch /path/to/batch.json
+\b
+The batch file should contain a JSON array of file paths to rename.
+\b
+Example batch file contents:
+\b
+[
+    {
+        "old_path": "/d999009/file_old.txt",
+        "new_path": "/d999009/file_new.txt"
+    },
+    {
+        "old_path": "/d999009/file2_old.txt",
+        "new_path": "/d999009/file2_new.txt"
+    },
+    {
+        "old_path": "/d999009/old_directory/",
+        "new_path": "/d999009/new_directory/"
+    }
+]
+\b
+4. The batch files can also be read from stdin using '-':
+\b
+$ dsglobus rename \\
+    --endpoint rda-quasar \\
+    --batch -
+[
+    {
+        "old_path": "/d999009/file_old.txt",
+        "new_path": "/d999009/file_new.txt"
+    },
+    {
+        "old_path": "/d999009/file2_old.txt",
+        "new_path": "/d999009/file2_new.txt"
+    },
+    {
+        "old_path": "/d999009/old_directory/",
+        "new_path": "/d999009/new_directory/"
+    }
+]
+<Ctrl+D>
+'''
+)
+@click.option(
+    "--old-path",
+    "-op",
+    type=str,
+    help="Old file or directory path on the endpoint.",
+)
+@click.option(
+    "--new-path",
+    "-np",
+    type=str,
+    help="New file or directory path on the endpoint.",
+)
+@click.option(
+    "--batch",
+	type=click.File('r'),
+    help=textwrap.dedent("""\
+        Accept a batch of multiple file/directory name pairs from a file. 
+        Use '-' to read from stdin, and close the stream with 'Ctrl+D'.  
+        See examples below.
+    """),
+)
+@endpoint_options
+@common_options
+def rename_command(
+    endpoint: str,
+    old_path: str,
+    new_path: str,
+    batch: t.TextIO
+) -> None:
+    """
+    Rename a file or directory on a Globus endpoint. Path is relative to the endpoint host path.
+    """
+
+    if batch:
+        files = process_json_stream(batch)
+    else:
+        files = [
+            {
+                "old_path": old_path,
+                "new_path": new_path
+            }
+        ]
+    
+    tc = transfer_client()
+    for file in files:
+        old_path = file["old_path"]
+        new_path = file["new_path"]
+        try:
+            res = tc.operation_rename(endpoint, old_path=old_path, new_path=new_path)
+            click.echo(f"old path: {old_path}\nnew path: {new_path}\n{res['message']}")
+        except (GlobusAPIError, NetworkError) as e:
+            logger.error(f"Error renaming file/directory: {e}")
+            raise click.Abort()
+
+@click.command(
     "delete",
     short_help="Delete files and/or directories on a Globus endpoint.",
     epilog='''
