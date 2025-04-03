@@ -160,6 +160,8 @@ def rename_command(
     if batch:
         files = process_json_stream(batch)
     else:
+        if old_path is None or new_path is None:
+            raise click.UsageError('--old-path and --new-path options are required if --batch is not used.')
         files = [
             {
                 "old_path": old_path,
@@ -233,7 +235,6 @@ $ dsglobus delete \\
     "--target-file",
     "-tf",
     type=str,
-    required=True,
     help="File or directory to delete on the endpoint.",
 )
 @click.option(
@@ -270,6 +271,8 @@ def delete_command(
             logger.error(f"Error processing batch file: {e}")
             raise click.Abort()
     else:
+        if target_file is None:
+            raise click.UsageError('--target-file is required if --batch is not used.')
         # Add the target file to delete data
         try:
             delete_data.add_item(target_file)

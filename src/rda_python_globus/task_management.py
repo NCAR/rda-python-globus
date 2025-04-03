@@ -86,8 +86,8 @@ def get_task(task_id: uuid.UUID) -> None:
     be pending, completed, failed, or in progress.
     """
     if not task_id:
-        click.echo("No task ID provided.")
-        return
+        raise click.UsageError("No task ID provided.")
+
     tc = transfer_client()
     try:
         task_info = tc.get_task(task_id)
@@ -217,8 +217,8 @@ def task_list(
 @common_options
 def cancel_task(task_id: uuid.UUID) -> None:
     if not task_id:
-        click.echo("No task ID provided.")
-        return
+        raise click.UsageError("No task ID provided.")
+    
     tc = transfer_client()
     try:
         res = tc.cancel_task(task_id)

@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @common_options
 def ls_command(
     endpoint: str,
-	path: str,
+    path: str,
     filter: str
 ) -> None:
     """ 

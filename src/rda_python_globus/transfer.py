@@ -8,9 +8,9 @@ from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options, 
-	task_submission_options,
+    task_submission_options,
     transfer_client,
-	process_json_stream,
+    process_json_stream,
     validate_endpoint,
 )
 
@@ -18,22 +18,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 def add_batch_to_transfer_data(batch, transfer_data):
-	""" Add batch of files to transfer data object. """
+    """ Add batch of files to transfer data object. """
 
-	batch_json = process_json_stream(batch)
+    batch_json = process_json_stream(batch)
 
-	try:
-		files = batch_json['files']
-	except KeyError:
-		logger.error("[add_batch_to_transfer_data] Files missing from JSON or command-line input")
-		sys.exit(1)
+    try:
+        files = batch_json['files']
+    except KeyError:
+        logger.error("[add_batch_to_transfer_data] Files missing from JSON or command-line input")
+        sys.exit(1)
 
-	for i in range(len(files)):
-		source_file = files[i]['source_file']
-		dest_file = files[i]['destination_file']		
-		transfer_data.add_item(source_file, dest_file)
+    for i in range(len(files)):
+        source_file = files[i]['source_file']
+        dest_file = files[i]['destination_file']		
+        transfer_data.add_item(source_file, dest_file)
 
-	return transfer_data
+    return transfer_data
 
 @click.command(
     "transfer",
@@ -156,6 +156,8 @@ def transfer_command(
     if batch:
         transfer_data = add_batch_to_transfer_data(batch, transfer_data)
     else:
+        if source_file is None or destination_file is None:
+            raise click.UsageError('--source-file and --destination-file are required is --batch is not used.')
         transfer_data.add_item(source_file, destination_file)
 		
     if dry_run:
