@@ -7,6 +7,7 @@ from globus_sdk import DeleteData, GlobusAPIError, NetworkError
 from .lib import (
     common_options,
     task_submission_options,
+    endpoint_options,
     transfer_client,
     validate_endpoint,
     process_json_stream,
@@ -76,14 +77,6 @@ $ dsglobus delete \\
 '''
 )
 @click.option(
-    "--endpoint",
-    "-ep",
-    type=str,
-    required=True,
-    callback=validate_endpoint,
-    help="Endpoint ID or name (alias).",
-)
-@click.option(
     "--target-file",
     "-tf",
     type=str,
@@ -99,6 +92,7 @@ $ dsglobus delete \\
         See examples below.
     """),
 )
+@endpoint_options
 @task_submission_options
 @common_options
 def delete_command(

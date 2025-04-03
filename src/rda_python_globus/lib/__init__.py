@@ -29,6 +29,17 @@ def task_submission_options(f):
 
     return f
 
+def endpoint_options(f):
+    f = click.option(
+        "--endpoint",
+        "-ep",
+        type=str,
+        required=True,
+        callback=validate_endpoint,
+        help="Endpoint ID or name (alias).",
+    )(f)
+    return f
+
 def valid_uuid(uuid):
     regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12}\Z', re.I)
     match = regex.match(uuid)
@@ -206,6 +217,7 @@ class CustomEpilog(click.Group):
 __all__ = (
     "common_options",
     "task_submission_options",
+    "endpoint_options",
     "validate_dsid",
     "valid_uuid",
     "validate_endpoint",
