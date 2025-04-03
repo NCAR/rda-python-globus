@@ -1,10 +1,13 @@
 import click
+import textwrap
+import typing as t
 from globus_sdk import DeleteData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
     transfer_client,
     validate_endpoint,
+    process_json_stream,
 )
 
 import logging
@@ -132,11 +135,12 @@ def delete_command(
 
     # Submit the task
     try:
-        task_id = tc.submit_transfer(transfer_data)
-        logger.info(f"Task ID: {task_id}")
+        delete_response = tc.submit_delete(delete_data)
+        task_id = delete_response["task_id"]
     except (GlobusAPIError, NetworkError) as e:
         logger.error(f"Error submitting task: {e}")
         raise click.Abort()
+    click.echo(f'Task ID: {task_id}\n{delete_response["message"]}')
 
 def add_commands(group):
     group.add_command(delete_command)
