@@ -1,3 +1,4 @@
+import sys
 import click
 import textwrap
 import typing as t
@@ -5,6 +6,7 @@ from globus_sdk import DeleteData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
+    task_submission_options,
     transfer_client,
     validate_endpoint,
     process_json_stream,
@@ -89,13 +91,6 @@ $ dsglobus delete \\
     help="File or directory to delete on the endpoint.",
 )
 @click.option(
-    "--label",
-    "-l",
-    type=str,
-    default="",
-    help="Label for the delete task.",
-)
-@click.option(
 	"--batch",
 	type=click.File('r'),
     help=textwrap.dedent("""\
@@ -104,12 +99,14 @@ $ dsglobus delete \\
         See examples below.
     """),
 )
+@task_submission_options
 @common_options
 def delete_command(
     endpoint: str,
     target_file: str,
     label: str,
     batch: t.TextIO,
+    dry_run: bool,
 ) -> None:
     """
     Delete files and/or directories on a Globus endpoint. Directory
@@ -132,6 +129,20 @@ def delete_command(
         except ValueError as e:
             logger.error(f"Error adding target file: {e}")
             raise click.Abort()
+
+    # If dry run is specified, print the delete data and exit
+    if dry_run:
+        click.echo("Dry run: delete data to be submitted:")
+        data = delete_data.data
+        click.echo(f"Endpoint: {data['endpoint_id']}")
+        click.echo(f"Label: {data['label']}")
+        click.echo("Files to delete:")
+        for item in data["items"]:
+            click.echo(f"  {item}")
+        click.echo("\n")
+
+        # exit safely
+        sys.exit(1)
 
     # Submit the task
     try:
