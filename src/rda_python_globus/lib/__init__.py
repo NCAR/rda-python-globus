@@ -40,6 +40,16 @@ def endpoint_options(f):
     )(f)
     return f
 
+def path_options(f):
+    f = click.option(
+        "--path",
+        "-p",
+        type=str,
+        default="",
+        help="Path to file or directory, relative to the endpoint host path.",
+    )(f)
+    return f
+
 def valid_uuid(uuid):
     regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12}\Z', re.I)
     match = regex.match(uuid)
@@ -218,6 +228,7 @@ __all__ = (
     "common_options",
     "task_submission_options",
     "endpoint_options",
+    "path_options",
     "validate_dsid",
     "valid_uuid",
     "validate_endpoint",

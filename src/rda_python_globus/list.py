@@ -3,9 +3,10 @@ from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
+    endpoint_options,
+    path_options,
     print_table, 
     transfer_client,
-    validate_endpoint,
 )
 
 import logging
@@ -16,25 +17,13 @@ logger = logging.getLogger(__name__)
     short_help="List files on an endpoint",
 )
 @click.option(
-    "--endpoint",
-    "-ep",
-    type=str,
-    callback=validate_endpoint,
-    required=True,
-    help="Endpoint ID or name (alias).",
-)
-@click.option(
-    "--path",
-    "-p",
-    type=str,
-    help="Directory path on endpoint. If not given, will use the root directory of the endpoint.",
-)
-@click.option(
     "--filter",
     "-f",
     type=str,
     help="Filter pattern for file listing. See help for details.",
 )
+@endpoint_options
+@path_options
 @common_options
 def ls_command(
     endpoint: str,

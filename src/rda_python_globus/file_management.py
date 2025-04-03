@@ -7,9 +7,9 @@ from globus_sdk import DeleteData, GlobusAPIError, NetworkError
 from .lib import (
     common_options,
     task_submission_options,
+    path_options,
     endpoint_options,
     transfer_client,
-    validate_endpoint,
     process_json_stream,
 )
 
@@ -18,12 +18,43 @@ logger = logging.getLogger(__name__)
 
 def add_batch_to_delete_data(batch, delete_data):
     """ Add batch of files to delete data object. """
-
     delete_files = process_json_stream(batch)
     for file in delete_files:
         delete_data.add_item(file)
 
     return delete_data
+
+@click.command(
+    "mkdir",
+    short_help="Create a directory on a Globus endpoint.",
+    epilog='''
+\b
+=== Examples ===
+\b
+1. Create a directory on the RDA Quasar endpoint:
+\b
+$ dsglobus mkdir \\
+    --endpoint rda-quasar \\
+    --path /d999009/new_directory
+'''
+)
+@endpoint_options
+@path_options
+@common_options
+def mkdir_command(
+    endpoint: str,
+    path: str,
+) -> None:
+    """
+    Create a directory on a Globus endpoint. Directory path is relative to the endpoint host path.
+    """
+    tc = transfer_client()
+    try:
+        res = tc.operation_mkdir(endpoint, path=path)
+        click.echo(f"{res['message']}")
+    except (GlobusAPIError, NetworkError) as e:
+        logger.error(f"Error creating directory: {e}")
+        raise click.Abort()
 
 @click.command(
     "delete",
