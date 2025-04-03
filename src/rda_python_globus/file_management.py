@@ -302,4 +302,5 @@ def delete_command(
 
 def add_commands(group):
     group.add_command(mkdir_command)
+    group.add_command(rename_command)
     group.add_command(delete_command)
