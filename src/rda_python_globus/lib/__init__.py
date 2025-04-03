@@ -8,10 +8,7 @@ import six
 import click
 
 from .auth import token_storage_adapter, auth_client, transfer_client
-from .config import ENDPOINT_ALIASES
-
-RDA_BASE_PATH = '/glade/campaign/collections/rda'
-LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
+from .config import ENDPOINT_ALIASES, LOGPATH, LOGFILE
 
 def common_options(f):
     # any shared/common options for all commands
@@ -203,7 +200,7 @@ def _key_to_keyfunc(k):
 
 def configure_log():
    """ Congigure logging """
-   logfile = os.path.join(LOGPATH, 'dsglobus-app.log')
+   logfile = os.path.join(LOGPATH, LOGFILE)
    loglevel = 'INFO'
    format = '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
    logging.basicConfig(
