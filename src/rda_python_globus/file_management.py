@@ -179,4 +179,5 @@ def delete_command(
     click.echo(f'Task ID: {task_id}\n{delete_response["message"]}')
 
 def add_commands(group):
+    group.add_command(mkdir_command)
     group.add_command(delete_command)
