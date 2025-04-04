@@ -40,48 +40,46 @@ def add_batch_to_transfer_data(batch, transfer_data):
     help="Submit a Globus transfer task.",
     epilog='''
 \b
-===========================
-Valid RDA endpoint names:
+=== Valid RDA endpoint names ===
 - rda-glade
 - rda-quasar
 - rda-quasar-drdata
 
 \b
-===========================
-Examples:
-
+=== Examples ===
+\b
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
 
 \b
-$ dsglobus transfer \\
-    --source-endpoint rda-glade \\
-    --destination-endpoint rda-quasar \\
-    --source-file /data/d999009/file.txt \\
-    --destination-file /d999009/file.txt	  			 
+   $ dsglobus transfer \\
+       --source-endpoint rda-glade \\
+       --destination-endpoint rda-quasar \\
+       --source-file /data/d999009/file.txt \\
+       --destination-file /d999009/file.txt	  			 
 
 2. Transfer a batch of files from a JSON file:
 
 \b				   
-$ dsglobus transfer \\
-    --source-endpoint SOURCE_ENDPOINT \\
-    --destination-endpoint DESTINATION_ENDPOINT \\
-    --batch /path/to/batch.json
+   $ dsglobus transfer \\
+       --source-endpoint SOURCE_ENDPOINT \\
+       --destination-endpoint DESTINATION_ENDPOINT \\
+       --batch /path/to/batch.json
 
 3. Transfer multiple files with the --batch option in JSON format.  Use '-' to read from stdin, and close the stream with 'Ctrl+D':
 
 \b
-$ dsglobus transfer \\
-    --source-endpoint SOURCE_ENDPOINT \\
-    --destination-endpoint DESTINATION_ENDPOINT \\
-    --batch -
-{
-  "files": [
-    {"source_file": "/data/d999009/file1.tar", "destination_file": "/d999009/file1.tar"},
-    {"source_file": "/data/d999009/file2.tar", "destination_file": "/d999009/file2.tar"},
-    {"source_file": "/data/d999009/file3.tar", "destination_file": "/d999009/file3.tar"}
-  ]
-}
-<Ctrl+D>
+   $ dsglobus transfer \\
+       --source-endpoint SOURCE_ENDPOINT \\
+       --destination-endpoint DESTINATION_ENDPOINT \\
+       --batch -
+   {
+     "files": [
+       {"source_file": "/data/d999009/file1.tar", "destination_file": "/d999009/file1.tar"},
+       {"source_file": "/data/d999009/file2.tar", "destination_file": "/d999009/file2.tar"},
+       {"source_file": "/data/d999009/file3.tar", "destination_file": "/d999009/file3.tar"}
+     ]
+   }
+   <Ctrl+D>
 ''',
 )
 @click.option(
