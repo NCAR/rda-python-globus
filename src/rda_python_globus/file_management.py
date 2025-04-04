@@ -196,17 +196,20 @@ def rename_command(
        --target-file /d999009/file.txt
 
 \b
-2. Delete a directory on the RDA Quasar endpoint:
+2. Delete a directory on the RDA Quasar endpoint.  --recursive is required
+   to delete a directory and its contents:
 \b
    $ dsglobus delete \\
        --endpoint rda-quasar \\
-       --target-file /d999009/dir
+       --target-file /d999009/dir \\
+       --recursive
 \b
 3. Delete a batch of files/directories on the RDA Quasar endpoint:
 \b
    $ dsglobus delete \\
        --endpoint rda-quasar \\
-       --batch /path/to/batch.json
+       --batch /path/to/batch.json \\
+       --recursive
 \b
    The batch file should contain a JSON array of file paths to delete.
 \b
@@ -223,6 +226,7 @@ def rename_command(
 \b
    $ dsglobus delete \\
        --endpoint rda-quasar \\
+       --recursive \\
        --batch -
    [
        "/d999009/file1.txt",
