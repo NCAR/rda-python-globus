@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rda_python_globus"
-version = "0.0.70"
+version = "0.0.71"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
