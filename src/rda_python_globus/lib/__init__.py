@@ -10,8 +10,6 @@ import click
 from .auth import token_storage_adapter, auth_client, transfer_client
 from .config import ENDPOINT_ALIASES, LOGPATH, LOGFILE
 
-DEFAULT_LABEL = "dsglobus task"
-
 def common_options(f):
     # any shared/common options for all commands
     return click.help_option("-h", "--help")(f)
@@ -24,7 +22,7 @@ def task_submission_options(f):
         is_flag=True,
         help="Don't actually submit the task, print submission data instead as a sanity check.",
     )(f)
-    f = click.option("--label", "-l", default=DEFAULT_LABEL, help="Label for the task")(f)
+    f = click.option("--label", "-l", default=None, help="Label for the task")(f)
 
     return f
 
