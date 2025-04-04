@@ -37,7 +37,7 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
 @click.command(
     "transfer",
-    short_help="Submit a Globus transfer task.",
+    help="Submit a Globus transfer task.",
     epilog='''
 \b
 ===========================
@@ -102,13 +102,13 @@ $ dsglobus transfer \\
 	"--source-file",
     "-sf",
     default=None,
-    help="Path to source file name, relative to source endpoint host path.",
+    help="Path to source file name, relative to source endpoint host path. Ignored if --batch is used.",
 )
 @click.option(
 	"--destination-file",
     "-df",
     default=None,
-    help="Path to destination file name, relative to destination endpoint host path.",
+    help="Path to destination file name, relative to destination endpoint host path. Ignored if --batch is used.",
 )
 @click.option(
 	"--verify-checksum/--no-verify-checksum",
@@ -139,9 +139,9 @@ def transfer_command(
     dry_run: bool,
     label: str
     ) -> None:
-    """
-    Submit a Globus transfer task.
-    """
+
+    if source_file is None and destination_file is None and batch is None:
+        raise click.UsageError('--source-file and --destination-file, or --batch is required.')
 
     tc = transfer_client()
 		

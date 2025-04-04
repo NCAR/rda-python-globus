@@ -128,13 +128,13 @@ $ dsglobus rename \\
     "--old-path",
     "-op",
     type=str,
-    help="Old file or directory path on the endpoint.",
+    help="Old file or directory path on the endpoint. Ignored if --batch is used.",
 )
 @click.option(
     "--new-path",
     "-np",
     type=str,
-    help="New file or directory path on the endpoint.",
+    help="New file or directory path on the endpoint. Ignored if --batch is used.",
 )
 @click.option(
     "--batch",
@@ -156,12 +156,14 @@ def rename_command(
     """
     Rename a file or directory on a Globus endpoint. Path is relative to the endpoint host path.
     """
+    if old_path is None and new_path is None and batch is None:
+        raise click.UsageError('--old-path and --new-path, or --batch is required.')
 
     if batch:
         files = process_json_stream(batch)
     else:
         if old_path is None or new_path is None:
-            raise click.UsageError('--old-path and --new-path options are required if --batch is not used.')
+            raise click.UsageError('--old-path and --new-path are required if --batch is not used.')
         files = [
             {
                 "old_path": old_path,
@@ -235,7 +237,7 @@ $ dsglobus delete \\
     "--target-file",
     "-tf",
     type=str,
-    help="File or directory to delete on the endpoint.",
+    help="File or directory to delete on the endpoint. Ignored if --batch is used.",
 )
 @click.option(
 	"--batch",
