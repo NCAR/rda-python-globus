@@ -176,7 +176,7 @@ def rename_command(
         old_path = file["old_path"]
         new_path = file["new_path"]
         try:
-            res = tc.operation_rename(endpoint, old_path=old_path, new_path=new_path)
+            res = tc.operation_rename(endpoint, oldpath=old_path, newpath=new_path)
             click.echo(f"old path: {old_path}\nnew path: {new_path}\n{res['message']}")
         except (GlobusAPIError, NetworkError) as e:
             logger.error(f"Error renaming file/directory: {e}")
