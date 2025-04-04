@@ -248,6 +248,14 @@ def rename_command(
         See examples below.
     """),
 )
+@click.option(
+    "--recursive",
+    "-r",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="Recursively delete directories and their contents.  Required if deleting a directory.",
+)
 @endpoint_options
 @task_submission_options
 @common_options
@@ -263,7 +271,7 @@ def delete_command(
     path is relative to the endpoint host path.
     """
     tc = transfer_client()
-    delete_data = DeleteData(tc, endpoint, label=label)
+    delete_data = DeleteData(tc, endpoint, label=label, recursive=recursive)
 
     # If a batch file is provided, read the file and add to delete data
     if batch:
