@@ -287,9 +287,12 @@ def delete_command(
         click.echo("Dry run: delete data to be submitted:")
         data = delete_data.data
         click.echo(f"Endpoint: {data['endpoint']}")
-        click.echo(f"Label: {data['label']}")
+        try:
+            click.echo(f"Label: {data['label']}")
+        except KeyError:
+            click.echo("Label: None")
         click.echo("Files to delete:")
-        for item in data["items"]:
+        for item in data["DATA"]:
             click.echo(f"  {item}")
         click.echo("\n")
 
