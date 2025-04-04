@@ -8,9 +8,9 @@ from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options, 
-	task_submission_options,
+    task_submission_options,
     transfer_client,
-	process_json_stream,
+    process_json_stream,
     validate_endpoint,
 )
 
@@ -18,70 +18,68 @@ import logging
 logger = logging.getLogger(__name__)
 
 def add_batch_to_transfer_data(batch, transfer_data):
-	""" Add batch of files to transfer data object. """
+    """ Add batch of files to transfer data object. """
 
-	batch_json = process_json_stream(batch)
+    batch_json = process_json_stream(batch)
 
-	try:
-		files = batch_json['files']
-	except KeyError:
-		logger.error("[add_batch_to_transfer_data] Files missing from JSON or command-line input")
-		sys.exit(1)
+    try:
+        files = batch_json['files']
+    except KeyError:
+        logger.error("[add_batch_to_transfer_data] Files missing from JSON or command-line input")
+        sys.exit(1)
 
-	for i in range(len(files)):
-		source_file = files[i]['source_file']
-		dest_file = files[i]['destination_file']		
-		transfer_data.add_item(source_file, dest_file)
+    for i in range(len(files)):
+        source_file = files[i]['source_file']
+        dest_file = files[i]['destination_file']		
+        transfer_data.add_item(source_file, dest_file)
 
-	return transfer_data
+    return transfer_data
 
 @click.command(
     "transfer",
-    short_help="Submit a Globus transfer task.",
+    help="Submit a Globus transfer task.",
     epilog='''
 \b
-===========================
-Valid RDA endpoint names:
+=== Valid RDA endpoint names ===
 - rda-glade
 - rda-quasar
 - rda-quasar-drdata
 
 \b
-===========================
-Examples:
-
+=== Examples ===
+\b
 1. Transfer a single file from GLADE to the NCAR Quasar tape system:
 
 \b
-$ dsglobus transfer \\
-    --source-endpoint rda-glade \\
-    --destination-endpoint rda-quasar \\
-    --source-file /data/d999009/file.txt \\
-    --destination-file /d999009/file.txt	  			 
+   $ dsglobus transfer \\
+       --source-endpoint rda-glade \\
+       --destination-endpoint rda-quasar \\
+       --source-file /data/d999009/file.txt \\
+       --destination-file /d999009/file.txt	  			 
 
 2. Transfer a batch of files from a JSON file:
 
 \b				   
-$ dsglobus transfer \\
-    --source-endpoint SOURCE_ENDPOINT \\
-    --destination-endpoint DESTINATION_ENDPOINT \\
-    --batch /path/to/batch.json
+   $ dsglobus transfer \\
+       --source-endpoint SOURCE_ENDPOINT \\
+       --destination-endpoint DESTINATION_ENDPOINT \\
+       --batch /path/to/batch.json
 
 3. Transfer multiple files with the --batch option in JSON format.  Use '-' to read from stdin, and close the stream with 'Ctrl+D':
 
 \b
-$ dsglobus transfer \\
-    --source-endpoint SOURCE_ENDPOINT \\
-    --destination-endpoint DESTINATION_ENDPOINT \\
-    --batch -
-{
-  "files": [
-    {"source_file": "/data/d999009/file1.tar", "destination_file": "/d999009/file1.tar"},
-    {"source_file": "/data/d999009/file2.tar", "destination_file": "/d999009/file2.tar"},
-    {"source_file": "/data/d999009/file3.tar", "destination_file": "/d999009/file3.tar"}
-  ]
-}
-<Ctrl+D>
+   $ dsglobus transfer \\
+       --source-endpoint SOURCE_ENDPOINT \\
+       --destination-endpoint DESTINATION_ENDPOINT \\
+       --batch -
+   {
+     "files": [
+       {"source_file": "/data/d999009/file1.tar", "destination_file": "/d999009/file1.tar"},
+       {"source_file": "/data/d999009/file2.tar", "destination_file": "/d999009/file2.tar"},
+       {"source_file": "/data/d999009/file3.tar", "destination_file": "/d999009/file3.tar"}
+     ]
+   }
+   <Ctrl+D>
 ''',
 )
 @click.option(
@@ -102,13 +100,13 @@ $ dsglobus transfer \\
 	"--source-file",
     "-sf",
     default=None,
-    help="Path to source file name, relative to source endpoint host path.",
+    help="Path to source file name, relative to source endpoint host path. Ignored if --batch is used.",
 )
 @click.option(
 	"--destination-file",
     "-df",
     default=None,
-    help="Path to destination file name, relative to destination endpoint host path.",
+    help="Path to destination file name, relative to destination endpoint host path. Ignored if --batch is used.",
 )
 @click.option(
 	"--verify-checksum/--no-verify-checksum",
@@ -139,9 +137,9 @@ def transfer_command(
     dry_run: bool,
     label: str
     ) -> None:
-    """
-    Submit a Globus transfer task.
-    """
+
+    if source_file is None and destination_file is None and batch is None:
+        raise click.UsageError('--source-file and --destination-file, or --batch is required.')
 
     tc = transfer_client()
 		
@@ -156,6 +154,8 @@ def transfer_command(
     if batch:
         transfer_data = add_batch_to_transfer_data(batch, transfer_data)
     else:
+        if source_file is None or destination_file is None:
+            raise click.UsageError('--source-file and --destination-file are required is --batch is not used.')
         transfer_data.add_item(source_file, destination_file)
 		
     if dry_run:

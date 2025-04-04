@@ -8,10 +8,7 @@ import six
 import click
 
 from .auth import token_storage_adapter, auth_client, transfer_client
-from .config import ENDPOINT_ALIASES
-
-RDA_BASE_PATH = '/glade/campaign/collections/rda'
-LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
+from .config import ENDPOINT_ALIASES, LOGPATH, LOGFILE
 
 def common_options(f):
     # any shared/common options for all commands
@@ -25,8 +22,29 @@ def task_submission_options(f):
         is_flag=True,
         help="Don't actually submit the task, print submission data instead as a sanity check.",
     )(f)
-    f = click.option("--label", "-l", default="", help="Label for the task")(f)
+    f = click.option("--label", "-l", default=None, help="Label for the task")(f)
 
+    return f
+
+def endpoint_options(f):
+    f = click.option(
+        "--endpoint",
+        "-ep",
+        type=str,
+        required=True,
+        callback=validate_endpoint,
+        help="Endpoint ID or name (alias).",
+    )(f)
+    return f
+
+def path_options(f):
+    f = click.option(
+        "--path",
+        "-p",
+        type=str,
+        default="",
+        help="Path to file or directory, relative to the endpoint host path.",
+    )(f)
     return f
 
 def valid_uuid(uuid):
@@ -182,7 +200,7 @@ def _key_to_keyfunc(k):
 
 def configure_log():
    """ Congigure logging """
-   logfile = os.path.join(LOGPATH, 'dsglobus-app.log')
+   logfile = os.path.join(LOGPATH, LOGFILE)
    loglevel = 'INFO'
    format = '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
    logging.basicConfig(
@@ -206,6 +224,8 @@ class CustomEpilog(click.Group):
 __all__ = (
     "common_options",
     "task_submission_options",
+    "endpoint_options",
+    "path_options",
     "validate_dsid",
     "valid_uuid",
     "validate_endpoint",
