@@ -86,7 +86,7 @@ def get_task(task_id: uuid.UUID) -> None:
     be pending, completed, failed, or in progress.
     """
     if not task_id:
-        raise click.UsageError("No task ID provided.")
+        raise click.UsageError("TASK_ID is required.")
 
     tc = transfer_client()
     try:
@@ -216,8 +216,12 @@ def task_list(
 )
 @common_options
 def cancel_task(task_id: uuid.UUID) -> None:
+    """
+    Cancel a Globus task.  This includes a task that is currently 
+    executing or queued for execution.
+    """
     if not task_id:
-        raise click.UsageError("No task ID provided.")
+        raise click.UsageError("TASK_ID is required.")
     
     tc = transfer_client()
     try:

@@ -33,9 +33,9 @@ def add_batch_to_delete_data(batch, delete_data):
 \b
 1. Create a directory on the RDA Quasar endpoint:
 \b
-$ dsglobus mkdir \\
-    --endpoint rda-quasar \\
-    --path /d999009/new_directory
+   $ dsglobus mkdir \\
+       --endpoint rda-quasar \\
+       --path /d999009/new_directory
 '''
 )
 @endpoint_options
@@ -65,63 +65,63 @@ def mkdir_command(
 \b
 1. Rename a single file on the RDA Quasar endpoint:
 \b
-$ dsglobus rename \\
-    --endpoint rda-quasar \\
-    --old-path /d999009/old_file.txt \\
-    --new-path /d999009/new_file.txt
+   $ dsglobus rename \\
+       --endpoint rda-quasar \\
+       --old-path /d999009/old_file.txt \\
+       --new-path /d999009/new_file.txt
 \b
 2. Rename a directory on the RDA Quasar endpoint:
 \b
-$ dsglobus rename \\
-    --endpoint rda-quasar \\
-    --old-path /d999009/old_directory \\
-    --new-path /d999009/new_directory
+   $ dsglobus rename \\
+       --endpoint rda-quasar \\
+       --old-path /d999009/old_directory \\
+       --new-path /d999009/new_directory
 \b
 3. Rename a batch of files/directories on the RDA Quasar endpoint:
 \b
-$ dsglobus rename \\
-    --endpoint rda-quasar \\
-    --batch /path/to/batch.json
+   $ dsglobus rename \\
+       --endpoint rda-quasar \\
+       --batch /path/to/batch.json
 \b
-The batch file should contain a JSON array of file paths to rename.
+   The batch file should contain a JSON array of file paths to rename.
 \b
-Example batch file contents:
+   Example batch file contents:
 \b
-[
-    {
-        "old_path": "/d999009/file_old.txt",
-        "new_path": "/d999009/file_new.txt"
-    },
-    {
-        "old_path": "/d999009/file2_old.txt",
-        "new_path": "/d999009/file2_new.txt"
-    },
-    {
-        "old_path": "/d999009/old_directory/",
-        "new_path": "/d999009/new_directory/"
-    }
-]
+   [
+       {
+           "old_path": "/d999009/file_old.txt",
+           "new_path": "/d999009/file_new.txt"
+       },
+       {
+           "old_path": "/d999009/file2_old.txt",
+           "new_path": "/d999009/file2_new.txt"
+       },
+       {
+           "old_path": "/d999009/old_directory/",
+           "new_path": "/d999009/new_directory/"
+       }
+   ]
 \b
 4. The batch files can also be read from stdin using '-':
 \b
-$ dsglobus rename \\
-    --endpoint rda-quasar \\
-    --batch -
-[
-    {
-        "old_path": "/d999009/file_old.txt",
-        "new_path": "/d999009/file_new.txt"
-    },
-    {
-        "old_path": "/d999009/file2_old.txt",
-        "new_path": "/d999009/file2_new.txt"
-    },
-    {
-        "old_path": "/d999009/old_directory/",
-        "new_path": "/d999009/new_directory/"
-    }
-]
-<Ctrl+D>
+   $ dsglobus rename \\
+       --endpoint rda-quasar \\
+       --batch -
+   [
+       {
+           "old_path": "/d999009/file_old.txt",
+           "new_path": "/d999009/file_new.txt"
+       },
+       {
+           "old_path": "/d999009/file2_old.txt",
+           "new_path": "/d999009/file2_new.txt"
+       },
+       {
+           "old_path": "/d999009/old_directory/",
+           "new_path": "/d999009/new_directory/"
+       }
+   ]
+   <Ctrl+D>
 '''
 )
 @click.option(
@@ -191,46 +191,46 @@ def rename_command(
 \b
 1. Delete a single file on the RDA Quasar endpoint:
 \b
-$ dsglobus delete \\
-    --endpoint rda-quasar \\
-    --target-file /d999009/file.txt
+   $ dsglobus delete \\
+       --endpoint rda-quasar \\
+       --target-file /d999009/file.txt
 
 \b
 2. Delete a directory on the RDA Quasar endpoint:
 \b
-$ dsglobus delete \\
-    --endpoint rda-quasar \\
-    --target-file /d999009/dir
+   $ dsglobus delete \\
+       --endpoint rda-quasar \\
+       --target-file /d999009/dir
 \b
 3. Delete a batch of files/directories on the RDA Quasar endpoint:
 \b
-$ dsglobus delete \\
-    --endpoint rda-quasar \\
-    --batch /path/to/batch.json
+   $ dsglobus delete \\
+       --endpoint rda-quasar \\
+       --batch /path/to/batch.json
 \b
-The batch file should contain a JSON array of file paths to delete.
+   The batch file should contain a JSON array of file paths to delete.
 \b
-Example batch file contents:
+   Example batch file contents:
 \b
-[
-    "/d999009/file1.txt",
-    "/d999009/file2.txt",
-    "/d999009/dir1",
-    "/d999009/dir2"
-]
+   [
+       "/d999009/file1.txt",
+       "/d999009/file2.txt",
+       "/d999009/dir1",
+       "/d999009/dir2"
+   ]
 \b
 4. The batch files can also be read from stdin using '-':
 \b
-$ dsglobus delete \\
-    --endpoint rda-quasar \\
-    --batch -
-[
-    "/d999009/file1.txt",
-    "/d999009/file2.txt",
-    "/d999009/dir1",
-    "/d999009/dir2"
-]
-<Ctrl+D>
+   $ dsglobus delete \\
+       --endpoint rda-quasar \\
+       --batch -
+   [
+       "/d999009/file1.txt",
+       "/d999009/file2.txt",
+       "/d999009/dir1",
+       "/d999009/dir2"
+   ]
+   <Ctrl+D>
 '''
 )
 @click.option(
