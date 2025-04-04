@@ -269,6 +269,7 @@ def delete_command(
     label: str,
     batch: t.TextIO,
     dry_run: bool,
+    recursive: bool,
 ) -> None:
     """
     Delete files and/or directories on a Globus endpoint. Directory
