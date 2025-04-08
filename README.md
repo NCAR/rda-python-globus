@@ -91,7 +91,8 @@ case and specific needs.
 
 ## Resources
 
-This app uses the 
+This app is adapted from the fully featured [Globus Command Line Interface (CLI)](https://docs.globus.org/cli/) 
+and uses the 
 [`TransferClient` class from the Globus SDK](https://globus-sdk-python.readthedocs.io/en/stable/services/transfer.html).
 
 The full [Globus Transfer documentation](https://docs.globus.org/api/transfer/) offers full
