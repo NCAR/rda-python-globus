@@ -1,4 +1,4 @@
-# rda-python-globus
+# dsglobus
 
 This application is a command-line tool for Globus data transfer and management of files 
 archived in the NSF NCAR Research Data Archive.
