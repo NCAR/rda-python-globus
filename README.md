@@ -47,7 +47,8 @@ $ dsglobus transfer \
     --destination-endpoint DESTINATION_ENDPOINT \
     --batch /path/to/batch.json
 ```
-where the JSON list of files is formatted as:
+where the contents of `batch.json` is formatted with `source_file/destination_file`
+pairs as:
 ```
 {
     "files": [
@@ -84,9 +85,9 @@ $ dsglobus ls -ep <endpoint> -p <path> --filter '!=file2.txt'  # anything but "f
 ## Customizing and extending dsglobus
 
 This app can be modified and adapted to be used on other Globus Transfer clients and endpoints with
-minimal effort.  Simply update the client ID, token storage, endpoint IDs, and other configuration
-parameters in `rda_globus_python/lib/config.py` to adapt the app to your use case and specific
-needs.
+minimal effort.  Simply update the client ID, token storage, endpoint IDs, endpoint aliases, and 
+other configuration parameters in `rda_globus_python/lib/config.py` to adapt the app to your use 
+case and specific needs.
 
 ## Resources
 
