@@ -81,6 +81,13 @@ $ dsglobus ls -ep <endpoint> -p <path> --filter 'file2.txt'    # same as '=file2
 $ dsglobus ls -ep <endpoint> -p <path> --filter '!=file2.txt'  # anything but "file2.txt"
 ```
 
+## Customizing and extending dsglobus
+
+This app can be modified and adapted to be used on other Globus Transfer clients and endpoints with
+minimal effort.  Simply update the client ID, token storage, endpoint IDs, and other configuration
+parameters in `rda_globus_python/lib/config.py` to adapt the app to your use case and specific
+needs.
+
 ## Resources
 
 This app uses the 
