@@ -160,12 +160,15 @@ def transfer_command(
 		
     if dry_run:
         data = transfer_data.data
-        msg = "\nSource endpoint ID: {0}".format(data['source_endpoint'])
-        msg += "\nDestination endpoint ID: {0}".format(data['destination_endpoint'])
-        msg += "\nLabel: {0}".format(data['label'])
-        msg += "\nVerify checksum: {0}".format(data['verify_checksum'])
-        msg += "\nTransfer items:\n{0}".format(json.dumps(data['DATA'], indent=2))
-        click.echo(f"""{msg}""")
+        click.echo("Source endpoint ID: {data['source_endpoint']}")
+        click.echo("Destination endpoint ID: {data['destination_endpoint']}")
+        try:
+            click.echo("Label: {data['label']}")
+        except KeyError:
+            click.echo("Label: None")
+        click.echo("Verify checksum: {data['verify_checksum']}")
+        click.echo("Transfer items:")
+        click.echo("".format(json.dumps(data['DATA'], indent=2)))
 
         # exit safely
         return
