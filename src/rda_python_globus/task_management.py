@@ -1,6 +1,6 @@
 import click
 import uuid
-import typing as t
+from typing import Sequence, Union
 import collections.abc
 import datetime
 from globus_sdk import GlobusAPIError, NetworkError
@@ -51,9 +51,9 @@ SUCCESSFUL_TRANSFER_FIELDS = [
 ]
 
 def _format_date_callback(
-    ctx: click.Context | None, 
+    ctx: Union[click.Context, None], 
     param: click.Parameter, 
-    value: datetime.datetime | None
+    value: Union[datetime.datetime, None]
 ) -> str:
     if value is None:
         return ""
@@ -61,9 +61,9 @@ def _format_date_callback(
 
 def _process_filterval(
     prefix: str,
-    value: str | t.Sequence[str | uuid.UUID] | None,
-    default: str | None = None,
-) -> str | None:
+    value: Union[str, Sequence[Union[str, uuid.UUID]], None],
+    default: Union[str, None] = None,
+) -> Union[str, None]:
     if not value:
         return default
     if isinstance(value, collections.abc.Sequence) and not any(value):
@@ -161,13 +161,13 @@ def get_task(task_id: uuid.UUID) -> None:
 @common_options
 def task_list(
     limit: int,
-    filter_task_id: str | None,
-    filter_status: str | None,
-    filter_type: str | None,
-    filter_requested_before: str | None,
-    filter_requested_after: str | None,
-    filter_completed_before: str | None,
-    filter_completed_after: str | None,
+    filter_task_id: Union[str, None],
+    filter_status: Union[str, None],
+    filter_type: Union[str, None],
+    filter_requested_before: Union[str, None],
+    filter_requested_after: Union[str, None],
+    filter_completed_before: Union[str, None],
+    filter_completed_after: Union[str, None],
 ) -> None:
     """ 
     List the most recent Globus tasks with optional filtering.

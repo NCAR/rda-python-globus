@@ -9,7 +9,9 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to
 install `rda_python_globus`.
 
 From within your Python virtual environment:
-- run `pip install git+https://github.com/NCAR/rda-python-globus`
+```
+pip install rda-python-globus
+```
 
 After installation, the cli command `dsglobus` will be available in
 the /bin directory of your virtual environment.
