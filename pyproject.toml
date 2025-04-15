@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rda_python_globus"
-version = "0.0.74"
+version = "1.0.0"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
 ]
 dependencies = [
     "globus_sdk",
