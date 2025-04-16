@@ -113,6 +113,7 @@ def get_task(task_id: uuid.UUID) -> None:
     "-l",
     type=int,
     default=10,
+    show_default=True,
     help="Limit the number of results returned.",
 )
 @click.option(
