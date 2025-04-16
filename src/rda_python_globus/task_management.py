@@ -113,6 +113,7 @@ def get_task(task_id: uuid.UUID) -> None:
     "-l",
     type=int,
     default=10,
+    show_default=True,
     help="Limit the number of results returned.",
 )
 @click.option(
@@ -180,8 +181,8 @@ def task_list(
 
     filter_parts.extend(
         [
-            _process_filterval("request_time", [filter_requested_before, filter_requested_after]),
-            _process_filterval("completion_time", [filter_completed_before, filter_completed_after]),
+            _process_filterval("request_time", [filter_requested_after, filter_requested_before]),
+            _process_filterval("completion_time", [filter_completed_after, filter_completed_before]),
         ]
     )
 
