@@ -31,10 +31,10 @@ def add_batch_to_delete_data(batch, delete_data):
 \b
 === Examples ===
 \b
-1. Create a directory on the RDA Quasar endpoint:
+1. Create a directory on the GDEX Quasar endpoint:
 \b
    $ dsglobus mkdir \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --path /d999009/new_directory
 '''
 )
@@ -63,24 +63,24 @@ def mkdir_command(
 \b
 === Examples ===
 \b
-1. Rename a single file on the RDA Quasar endpoint:
+1. Rename a single file on the GDEX Quasar endpoint:
 \b
    $ dsglobus rename \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --old-path /d999009/old_file.txt \\
        --new-path /d999009/new_file.txt
 \b
-2. Rename a directory on the RDA Quasar endpoint:
+2. Rename a directory on the GDEX Quasar endpoint:
 \b
    $ dsglobus rename \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --old-path /d999009/old_directory \\
        --new-path /d999009/new_directory
 \b
-3. Rename a batch of files/directories on the RDA Quasar endpoint:
+3. Rename a batch of files/directories on the GDEX Quasar endpoint:
 \b
    $ dsglobus rename \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --batch /path/to/batch.json
 \b
    The batch file should contain a JSON array of file paths to rename.
@@ -105,7 +105,7 @@ def mkdir_command(
 4. The batch files can also be read from stdin using '-':
 \b
    $ dsglobus rename \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --batch -
    [
        {
@@ -189,25 +189,25 @@ def rename_command(
 \b
 === Examples ===
 \b
-1. Delete a single file on the RDA Quasar endpoint:
+1. Delete a single file on the GDEX Quasar endpoint:
 \b
    $ dsglobus delete \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --target-file /d999009/file.txt
 
 \b
-2. Delete a directory on the RDA Quasar endpoint.  --recursive is required
+2. Delete a directory on the GDEX Quasar endpoint.  --recursive is required
    to delete a directory and its contents:
 \b
    $ dsglobus delete \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --target-file /d999009/dir \\
        --recursive
 \b
-3. Delete a batch of files/directories on the RDA Quasar endpoint:
+3. Delete a batch of files/directories on the GDEX Quasar endpoint:
 \b
    $ dsglobus delete \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --batch /path/to/batch.json \\
        --recursive
 \b
@@ -225,7 +225,7 @@ def rename_command(
 4. The batch files can also be read from stdin using '-':
 \b
    $ dsglobus delete \\
-       --endpoint rda-quasar \\
+       --endpoint gdex-quasar \\
        --recursive \\
        --batch -
    [

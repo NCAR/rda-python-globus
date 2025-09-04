@@ -41,9 +41,9 @@ def add_batch_to_transfer_data(batch, transfer_data):
     epilog='''
 \b
 === Valid RDA endpoint names ===
-- rda-glade
-- rda-quasar
-- rda-quasar-drdata
+- gdex-glade
+- gdex-quasar
+- gdex-quasar-drdata
 
 \b
 === Examples ===
@@ -52,8 +52,8 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
 \b
    $ dsglobus transfer \\
-       --source-endpoint rda-glade \\
-       --destination-endpoint rda-quasar \\
+       --source-endpoint gdex-glade \\
+       --destination-endpoint gdex-quasar \\
        --source-file /data/d999009/file.txt \\
        --destination-file /d999009/file.txt	  			 
 
