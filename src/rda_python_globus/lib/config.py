@@ -7,7 +7,7 @@ CLIENT_ID = "05c2f58b-c667-4fc4-94fb-546e1cd8f41f"
 CLIENT_TOKEN_CONFIG = '/glade/u/home/rdadata/lib/python/globus_rda_quasar_tokens.json'
 
 """ Log file path and name """
-RDA_BASE_PATH = '/glade/campaign/collections/gdex'
+GDEX_BASE_PATH = '/glade/campaign/collections/gdex'
 SCRATCH_PATH = '/lustre/desc1/scratch/tcram'
 LOGPATH = os.path.join(SCRATCH_PATH, 'logs/globus')
 LOGFILE = 'dsglobus-app.log'
