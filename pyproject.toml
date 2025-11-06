@@ -6,13 +6,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rda_python_globus"
-version = "1.0.4"
+version = "1.0.5"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
-description = "Tools for managing Globus transfers supporting the NSF NCAR Research Data Archive"
+description = "Tools for managing Globus transfers supporting the NSF NCAR Geoscience Data Exchange (GDEX) project."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -20,8 +20,8 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
 ]
 dependencies = [
-    "globus_sdk",
-    "click",
+    "globus_sdk<4.0.0",
+    "click>=8.3.0",
     "pyyaml",
     "six",
 ]
