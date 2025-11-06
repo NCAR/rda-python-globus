@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = [
     "globus_sdk<4.0.0",
-    "click",
+    "click>=8.3.0",
     "pyyaml",
     "six",
 ]
