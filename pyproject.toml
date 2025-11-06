@@ -20,7 +20,7 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
 ]
 dependencies = [
-    "globus_sdk",
+    "globus_sdk<4.0.0",
     "click",
     "pyyaml",
     "six",
