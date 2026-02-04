@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import typing as t
@@ -12,13 +13,14 @@ from .lib import (
     transfer_client,
     process_json_stream,
     validate_endpoint,
-    TACC_BASE_PATH
+    TACC_BASE_PATH,
+    TACC_GLOBUS_ENDPOINT,
 )
 
 import logging
 logger = logging.getLogger(__name__)
 
-def add_batch_to_transfer_data(batch, transfer_data):
+def add_batch_to_transfer_data(batch, transfer_data, destination_endpoint):
     """ Add batch of files to transfer data object. """
 
     batch_json = process_json_stream(batch)
@@ -31,7 +33,10 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
     for i in range(len(files)):
         source_file = files[i]['source_file']
-        dest_file = files[i]['destination_file']		
+        dest_file = files[i]['destination_file']
+        if destination_endpoint == TACC_GLOBUS_ENDPOINT:
+            # prepend TACC base path to destination file
+            dest_file = os.path.join(TACC_BASE_PATH, dest_file.lstrip('/'))
         transfer_data.add_item(source_file, dest_file)
 
     return transfer_data
@@ -153,10 +158,13 @@ def transfer_command(
     )
 
     if batch:
-        transfer_data = add_batch_to_transfer_data(batch, transfer_data)
+        transfer_data = add_batch_to_transfer_data(batch, transfer_data, destination_endpoint)
     else:
         if source_file is None or destination_file is None:
             raise click.UsageError('--source-file and --destination-file are required is --batch is not used.')
+        if destination_endpoint == TACC_GLOBUS_ENDPOINT:
+            # prepend TACC base path to destination file
+            destination_file = os.path.join(TACC_BASE_PATH, destination_file.lstrip('/'))
         transfer_data.add_item(source_file, destination_file)
 		
     if dry_run:

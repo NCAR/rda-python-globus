@@ -239,5 +239,6 @@ __all__ = (
     "transfer_client",
     "ENDPOINT_ALIASES",
     "CustomEpilog",
+    "TACC_GLOBUS_ENDPOINT",
     "TACC_BASE_PATH",
 )
