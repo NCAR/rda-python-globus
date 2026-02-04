@@ -12,6 +12,7 @@ from .lib import (
     transfer_client,
     process_json_stream,
     validate_endpoint,
+    TACC_BASE_PATH
 )
 
 import logging
@@ -40,7 +41,7 @@ def add_batch_to_transfer_data(batch, transfer_data):
     help="Submit a Globus transfer task.",
     epilog='''
 \b
-=== Valid RDA endpoint names ===
+=== Valid GDEX endpoint names ===
 - gdex-glade
 - gdex-quasar
 - gdex-quasar-drdata

@@ -8,7 +8,7 @@ import six
 import click
 
 from .auth import token_storage_adapter, auth_client, transfer_client
-from .config import ENDPOINT_ALIASES, LOGPATH, LOGFILE
+from .config import ENDPOINT_ALIASES, LOGPATH, LOGFILE, TACC_BASE_PATH
 
 def common_options(f):
     # any shared/common options for all commands
@@ -239,4 +239,5 @@ __all__ = (
     "transfer_client",
     "ENDPOINT_ALIASES",
     "CustomEpilog",
+    "TACC_BASE_PATH",
 )
