@@ -148,7 +148,10 @@ def transfer_command(
     if source_file is None and destination_file is None and batch is None:
         raise click.UsageError('--source-file and --destination-file, or --batch is required.')
 
-    tc = transfer_client()
+    if source_endpoint == TACC_GLOBUS_ENDPOINT or destination_endpoint == TACC_GLOBUS_ENDPOINT:
+        tc = transfer_client(namespace="tacc")
+    else:
+        tc = transfer_client()
 		
     transfer_data = TransferData(
         transfer_client=tc,
