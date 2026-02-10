@@ -50,11 +50,12 @@ def add_batch_to_transfer_data(batch, transfer_data, destination_endpoint):
 - gdex-glade
 - gdex-quasar
 - gdex-quasar-drdata
+- tacc # TACC transfer endpoint, for transfers to/from TACC only
 
 \b
 === Examples ===
 \b
-1. Transfer a single file from GLADE to the NCAR Quasar tape system:
+1. Transfer a single file from GLADE to the Quasar tape system:
 
 \b
    $ dsglobus transfer \\
