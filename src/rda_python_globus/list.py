@@ -1,5 +1,4 @@
 import click
-from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
