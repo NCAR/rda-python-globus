@@ -6,7 +6,7 @@ TACC_CLIENT_ID = "3320e8d9-030c-41d0-94f0-2357ae2e3e4d"
 
 """ Token storage configuration """
 CLIENT_TOKEN_CONFIG = '/glade/u/home/gdexdata/lib/python/globus_rda_quasar_tokens.json'
-TACC_TOKEN_CONFIG = '/glade/u/home/gdexdata/globus/globus_tacc_transfer_tokens.json
+TACC_TOKEN_CONFIG = '/glade/u/home/gdexdata/globus/globus_tacc_transfer_tokens.json'
 
 """ Log file path and name """
 GDEX_BASE_PATH = '/glade/campaign/collections/gdex'
