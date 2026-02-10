@@ -5,6 +5,7 @@ from .config import (
     TACC_CLIENT_ID,
     CLIENT_TOKEN_CONFIG,
     TACC_TOKEN_CONFIG,
+)
 
 AUTH_RESOURCE_SERVER = "auth.globus.org"
 AUTH_SCOPES = ["openid", "profile"]
@@ -12,7 +13,7 @@ TRANSFER_RESOURCE_SERVER = "transfer.api.globus.org"
 TRANSFFER_SCOPES = "urn:globus:auth:scope:transfer.api.globus.org:all"
 
 def token_storage_adapter(namespace="quasar"):
-""" Return a JSONTokenStorage instance for the specified namespace. If an instance already exists, return the existing instance. """
+    """ Return a JSONTokenStorage instance for the specified namespace. If an instance already exists, return the existing instance. """
     if namespace == "tacc":
         json_config = TACC_TOKEN_CONFIG
     else:
@@ -23,7 +24,7 @@ def token_storage_adapter(namespace="quasar"):
     return token_storage_adapter._instance
 
 def internal_auth_client(client_id=QUASAR_CLIENT_ID):
-""" Return a NativeAppAuthClient instance for the specified client ID. """
+    """ Return a NativeAppAuthClient instance for the specified client ID. """
     return globus_sdk.NativeAppAuthClient(client_id, app_name="dsglobus")
 
 def auth_client():
@@ -31,7 +32,7 @@ def auth_client():
     return globus_sdk.AuthClient(authorizer=authorizer, app_name="dsglobus")
 
 def transfer_client(namespace="quasar"):
-""" Return a TransferClient instance for the specified namespace. """
+    """ Return a TransferClient instance for the specified namespace. """
 
     if namespace == 'tacc':
         client_id = TACC_CLIENT_ID
