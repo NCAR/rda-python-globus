@@ -31,7 +31,7 @@ def auth_client():
     authorizer = globus_sdk.ClientCredentialsAuthorizer(internal_auth_client(), AUTH_SCOPES)
     return globus_sdk.AuthClient(authorizer=authorizer, app_name="dsglobus")
 
-def transfer_client(namespace="quasar"):
+def transfer_client(namespace="DEFAULT"):
     """ Return a TransferClient instance for the specified namespace. """
 
     if namespace == 'tacc':
