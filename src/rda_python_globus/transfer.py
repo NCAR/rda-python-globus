@@ -47,10 +47,11 @@ def add_batch_to_transfer_data(batch, transfer_data, destination_endpoint):
     epilog='''
 \b
 === Valid GDEX endpoint names ===
-- gdex-glade
-- gdex-quasar
-- gdex-quasar-drdata
-- tacc # TACC transfer endpoint, for transfers to/from TACC only
+- gdex-glade         # Base path: /glade/campaign/collections/gdex
+- gdex-quasar        # Base path: /gpfs/gpfs0/archive/rda
+- gdex-quasar-drdata # Base path: /gpfs/gpfs0/archive/rda_dr
+- gdex-lustre        # Base path: /lustre/desc1/gdex
+- tacc               # TACC transfer endpoint, for transfers to/from TACC only. Base path: /scoutfs/projects/ASC26015
 
 \b
 === Examples ===
