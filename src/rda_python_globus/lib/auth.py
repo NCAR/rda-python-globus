@@ -12,7 +12,7 @@ AUTH_SCOPES = ["openid", "profile"]
 TRANSFER_RESOURCE_SERVER = "transfer.api.globus.org"
 TRANSFFER_SCOPES = "urn:globus:auth:scope:transfer.api.globus.org:all"
 
-def token_storage_adapter(namespace="quasar"):
+def token_storage_adapter(namespace="DEFAULT"):
     """ Return a JSONTokenStorage instance for the specified namespace. If an instance already exists, return the existing instance. """
     if namespace == "tacc":
         json_config = TACC_TOKEN_CONFIG
