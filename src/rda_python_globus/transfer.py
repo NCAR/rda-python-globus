@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import typing as t
@@ -12,12 +13,14 @@ from .lib import (
     transfer_client,
     process_json_stream,
     validate_endpoint,
+    TACC_BASE_PATH,
+    TACC_GLOBUS_ENDPOINT,
 )
 
 import logging
 logger = logging.getLogger(__name__)
 
-def add_batch_to_transfer_data(batch, transfer_data):
+def add_batch_to_transfer_data(batch, transfer_data, destination_endpoint):
     """ Add batch of files to transfer data object. """
 
     batch_json = process_json_stream(batch)
@@ -30,7 +33,10 @@ def add_batch_to_transfer_data(batch, transfer_data):
 
     for i in range(len(files)):
         source_file = files[i]['source_file']
-        dest_file = files[i]['destination_file']		
+        dest_file = files[i]['destination_file']
+        if destination_endpoint == TACC_GLOBUS_ENDPOINT:
+            # prepend TACC base path to destination file
+            dest_file = os.path.join(TACC_BASE_PATH, dest_file.lstrip('/'))
         transfer_data.add_item(source_file, dest_file)
 
     return transfer_data
@@ -40,15 +46,16 @@ def add_batch_to_transfer_data(batch, transfer_data):
     help="Submit a Globus transfer task.",
     epilog='''
 \b
-=== Valid RDA endpoint names ===
+=== Valid GDEX endpoint names ===
 - gdex-glade
 - gdex-quasar
 - gdex-quasar-drdata
+- tacc # TACC transfer endpoint, for transfers to/from TACC only
 
 \b
 === Examples ===
 \b
-1. Transfer a single file from GLADE to the NCAR Quasar tape system:
+1. Transfer a single file from GLADE to the Quasar tape system:
 
 \b
    $ dsglobus transfer \\
@@ -141,7 +148,10 @@ def transfer_command(
     if source_file is None and destination_file is None and batch is None:
         raise click.UsageError('--source-file and --destination-file, or --batch is required.')
 
-    tc = transfer_client()
+    if source_endpoint == TACC_GLOBUS_ENDPOINT or destination_endpoint == TACC_GLOBUS_ENDPOINT:
+        tc = transfer_client(namespace="tacc")
+    else:
+        tc = transfer_client()
 		
     transfer_data = TransferData(
         transfer_client=tc,
@@ -152,10 +162,13 @@ def transfer_command(
     )
 
     if batch:
-        transfer_data = add_batch_to_transfer_data(batch, transfer_data)
+        transfer_data = add_batch_to_transfer_data(batch, transfer_data, destination_endpoint)
     else:
         if source_file is None or destination_file is None:
             raise click.UsageError('--source-file and --destination-file are required is --batch is not used.')
+        if destination_endpoint == TACC_GLOBUS_ENDPOINT:
+            # prepend TACC base path to destination file
+            destination_file = os.path.join(TACC_BASE_PATH, destination_file.lstrip('/'))
         transfer_data.add_item(source_file, destination_file)
 		
     if dry_run:

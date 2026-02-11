@@ -1,5 +1,4 @@
 import click
-from globus_sdk import TransferData, GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
@@ -7,6 +6,7 @@ from .lib import (
     path_options,
     print_table, 
     transfer_client,
+    TACC_GLOBUS_ENDPOINT
 )
 
 import logging
@@ -80,7 +80,11 @@ def ls_command(
 			("Filename", cleaned_item_name),
 	]
 
-    tc = transfer_client()
+    if endpoint == TACC_GLOBUS_ENDPOINT:
+        tc = transfer_client(namespace="tacc")
+    else:
+        tc = transfer_client()
+
     ls_response = tc.operation_ls(endpoint, **ls_params)
     print_table(ls_response, fields)
 	
