@@ -9,6 +9,7 @@ from .lib import (
     task_submission_options,
     path_options,
     endpoint_options,
+    namespace_options,
     transfer_client,
     process_json_stream,
 )
@@ -40,15 +41,17 @@ def add_batch_to_delete_data(batch, delete_data):
 )
 @endpoint_options
 @path_options
+@namespace_options
 @common_options
 def mkdir_command(
     endpoint: str,
     path: str,
+    namespace: str
 ) -> None:
     """
     Create a directory on a Globus endpoint. Directory path is relative to the endpoint host path.
     """
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     try:
         res = tc.operation_mkdir(endpoint, path=path)
         click.echo(f"{res['message']}")
@@ -146,12 +149,14 @@ def mkdir_command(
     """),
 )
 @endpoint_options
+@namespace_options
 @common_options
 def rename_command(
     endpoint: str,
     old_path: str,
     new_path: str,
-    batch: t.TextIO
+    batch: t.TextIO,
+    namespace: str
 ) -> None:
     """
     Rename a file or directory on a Globus endpoint. Path is relative to the endpoint host path.
@@ -171,7 +176,7 @@ def rename_command(
             }
         ]
     
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     for file in files:
         old_path = file["old_path"]
         new_path = file["new_path"]
@@ -262,6 +267,7 @@ def rename_command(
 )
 @endpoint_options
 @task_submission_options
+@namespace_options
 @common_options
 def delete_command(
     endpoint: str,
@@ -270,12 +276,13 @@ def delete_command(
     batch: t.TextIO,
     dry_run: bool,
     recursive: bool,
+    namespace: str,
 ) -> None:
     """
     Delete files and/or directories on a Globus endpoint. Directory
     path is relative to the endpoint host path.
     """
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     delete_data = DeleteData(tc, endpoint, label=label, recursive=recursive)
 
     # If a batch file is provided, read the file and add to delete data

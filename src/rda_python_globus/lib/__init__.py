@@ -47,6 +47,17 @@ def path_options(f):
     )(f)
     return f
 
+def namespace_options(f):
+    f = click.option(
+        "--namespace",
+        "-ns",
+        type=str,
+        default="DEFAULT",
+        show_default=True,
+        help="Globus client namespace for the task or operation. Set to 'tacc' to view transfer tasks or operations to/from TACC.",
+    )(f)
+    return f
+
 def valid_uuid(uuid):
     regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{4}-?[a-f0-9]{12}\Z', re.I)
     match = regex.match(uuid)
@@ -226,6 +237,7 @@ __all__ = (
     "task_submission_options",
     "endpoint_options",
     "path_options",
+    "namespace_options",
     "validate_dsid",
     "valid_uuid",
     "validate_endpoint",
