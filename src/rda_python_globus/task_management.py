@@ -79,8 +79,16 @@ def _process_filterval(
     "task-id",
     type=click.UUID,
 )
+@click.option(
+    "--namespace",
+    "-ns",
+    type=str,
+    default="DEFAULT",
+    show_default=True,
+    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
+)
 @common_options
-def get_task(task_id: uuid.UUID) -> None:
+def get_task(task_id: uuid.UUID, namespace: str) -> None:
     """ 
     Print information including status about a Globus task.  The task may
     be pending, completed, failed, or in progress.
@@ -88,7 +96,7 @@ def get_task(task_id: uuid.UUID) -> None:
     if not task_id:
         raise click.UsageError("TASK_ID is required.")
 
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     try:
         task_info = tc.get_task(task_id)
     except (GlobusAPIError, NetworkError) as e:
@@ -159,6 +167,14 @@ def get_task(task_id: uuid.UUID) -> None:
     callback=_format_date_callback,
     help="Filter tasks completed after this date.",
 )
+@click.option(
+    "--namespace",
+    "-ns",
+    type=str,
+    default="DEFAULT",
+    show_default=True,
+    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
+)
 @common_options
 def task_list(
     limit: int,
@@ -169,6 +185,7 @@ def task_list(
     filter_requested_after: Union[str, None],
     filter_completed_before: Union[str, None],
     filter_completed_after: Union[str, None],
+    namespace: str
 ) -> None:
     """ 
     List the most recent Globus tasks with optional filtering.
@@ -199,7 +216,7 @@ def task_list(
         ("Label", "label")
     ]
 
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     try:
         tasks = tc.task_list(limit=limit, filter=filter_string, orderby="request_time DESC")
     except (GlobusAPIError, NetworkError) as e:
@@ -215,8 +232,16 @@ def task_list(
     "task-id",
     type=click.UUID,
 )
+@click.option(
+    "--namespace",
+    "-ns",
+    type=str,
+    default="DEFAULT",
+    show_default=True,
+    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
+)
 @common_options
-def cancel_task(task_id: uuid.UUID) -> None:
+def cancel_task(task_id: uuid.UUID, namespace: str) -> None:
     """
     Cancel a Globus task.  This includes a task that is currently 
     executing or queued for execution.
@@ -224,7 +249,7 @@ def cancel_task(task_id: uuid.UUID) -> None:
     if not task_id:
         raise click.UsageError("TASK_ID is required.")
     
-    tc = transfer_client()
+    tc = transfer_client(namespace=namespace)
     try:
         res = tc.cancel_task(task_id)
         click.echo(f"Task {task_id}\n{res['message']}")
