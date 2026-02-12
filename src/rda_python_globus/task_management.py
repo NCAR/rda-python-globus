@@ -7,6 +7,7 @@ from globus_sdk import GlobusAPIError, NetworkError
 
 from .lib import (
     common_options,
+    namespace_options,
     transfer_client,
     colon_formatted_print,
     print_table,
@@ -79,14 +80,7 @@ def _process_filterval(
     "task-id",
     type=click.UUID,
 )
-@click.option(
-    "--namespace",
-    "-ns",
-    type=str,
-    default="DEFAULT",
-    show_default=True,
-    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
-)
+@namespace_options
 @common_options
 def get_task(task_id: uuid.UUID, namespace: str) -> None:
     """ 
@@ -167,14 +161,7 @@ def get_task(task_id: uuid.UUID, namespace: str) -> None:
     callback=_format_date_callback,
     help="Filter tasks completed after this date.",
 )
-@click.option(
-    "--namespace",
-    "-ns",
-    type=str,
-    default="DEFAULT",
-    show_default=True,
-    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
-)
+@namespace_options
 @common_options
 def task_list(
     limit: int,
@@ -232,14 +219,7 @@ def task_list(
     "task-id",
     type=click.UUID,
 )
-@click.option(
-    "--namespace",
-    "-ns",
-    type=str,
-    default="DEFAULT",
-    show_default=True,
-    help="Namespace for the task. Set to 'tacc' to view transfer tasks to/from TACC.",
-)
+@namespace_options
 @common_options
 def cancel_task(task_id: uuid.UUID, namespace: str) -> None:
     """
