@@ -1,7 +1,7 @@
 # dsglobus
 
 This application is a command-line tool for Globus data transfer and management of files 
-archived in the NSF NCAR Research Data Archive.
+archived in the [NSF NCAR Geoscience Data Exchange (GDEX)](https://gdex.ucar.edu).
 
 ## Installation
 
@@ -24,6 +24,7 @@ The `dsglobus` app is run with the following subcommands.  Each supports a
 dsglobus transfer --help
 dsglobus get-task --help
 dsglobus task-list --help
+dsglobus task-event-list --help
 dsglobus cancel-task --help
 dsglobus ls --help
 dsglobus mkdir --help
@@ -32,12 +33,12 @@ dsglobus delete --help
 ```
 
 ### Example usage
-1. Transfer a single file from the `NCAR RDA GLADE` endpoint to the `NCAR RDA Quasar`
+1. Transfer a single file from the `NCAR GDEX GLADE` endpoint to the `NCAR GDEX Quasar`
 endpoint:
 ```
 $ dsglobus transfer \
-    --source-endpoint rda-glade \
-    --destination-endpoint rda-quasar \
+    --source-endpoint gdex-glade \
+    --destination-endpoint gdex-quasar \
     --source-file /data/d999009/file.txt \
     --destination-file /d999009/file.txt
 ```
