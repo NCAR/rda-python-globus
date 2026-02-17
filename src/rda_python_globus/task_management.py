@@ -234,9 +234,15 @@ def task_list(
     default=None,
     help="Offset used in pagination.",
 )
+@click.option(
+    "--error-only",
+    "-e",
+    is_flag=True,
+    help="Only show events with error codes.",
+)
 @namespace_options
 @common_options
-def task_event_list(task_id: uuid.UUID, limit: int, offset: int, namespace: str) -> None:
+def task_event_list(task_id: uuid.UUID, limit: int, offset: int, error_only: bool, namespace: str) -> None:
     """ 
     List the events associated with a Globus task.  This includes status
     updates, error messages, and other information about the task's progress.
@@ -246,7 +252,9 @@ def task_event_list(task_id: uuid.UUID, limit: int, offset: int, namespace: str)
     
     tc = transfer_client(namespace=namespace)
     try:
-        for event in tc.paginated.task_event_list(task_id, limit=limit, offset=offset).items():
+        if error_only:
+            filters = {"filter": "is_error:1"}
+        for event in tc.task_event_list(task_id, limit=limit, offset=offset, query_params=filters).items():
             print(f"Event on Task({task_id}) at {event['time']}:\n{event['code']}\n{event['description']}\n{event['details']}\n")
     except (GlobusAPIError, NetworkError) as e:
         logger.error(f"Error: {e}")
