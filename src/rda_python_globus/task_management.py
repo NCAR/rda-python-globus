@@ -213,6 +213,55 @@ def task_list(
     print_table(tasks, fields)
 
 @click.command(
+    help="List events and show details about a Globus task, including faults and error messages.",
+)
+@click.argument(
+    "task-id",
+    type=click.UUID,
+)
+@click.option(
+    "--limit",
+    "-l",
+    type=int,
+    default=None,
+    show_default=True,
+    help="Limit the number of results returned.",
+)
+@click.option(
+    "--offset",
+    "-o",
+    type=int,
+    default=None,
+    help="Offset used in pagination.",
+)
+@click.option(
+    "--error-only",
+    "-e",
+    is_flag=True,
+    help="Only show events with error codes.",
+)
+@namespace_options
+@common_options
+def task_event_list(task_id: uuid.UUID, limit: int, offset: int, error_only: bool, namespace: str) -> None:
+    """ 
+    List the events associated with a Globus task.  This includes status
+    updates, error messages, and other information about the task's progress.
+    """
+    if not task_id:
+        raise click.UsageError("TASK_ID is required.")
+    
+    tc = transfer_client(namespace=namespace)
+    try:
+        if error_only:
+            filters = {"filter": "is_error:1"}
+        for event in tc.task_event_list(task_id, limit=limit, offset=offset, query_params=filters):
+            print(f"Event on Task({task_id}) at {event['time']}:\n{event['code']}\n{event['description']}\n{event['details']}\n")
+    except (GlobusAPIError, NetworkError) as e:
+        logger.error(f"Error: {e}")
+        click.echo("Failed to get task events.")
+        return
+
+@click.command(
     help="Cancel a Globus task.",
 )
 @click.argument(
@@ -241,4 +290,5 @@ def add_commands(group):
     """ Add task management commands to a click group. """
     group.add_command(get_task)
     group.add_command(task_list)
+    group.add_command(task_event_list)
     group.add_command(cancel_task)
