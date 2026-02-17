@@ -254,7 +254,7 @@ def task_event_list(task_id: uuid.UUID, limit: int, offset: int, error_only: boo
     try:
         if error_only:
             filters = {"filter": "is_error:1"}
-        for event in tc.task_event_list(task_id, limit=limit, offset=offset, query_params=filters).items():
+        for event in tc.task_event_list(task_id, limit=limit, offset=offset, query_params=filters):
             print(f"Event on Task({task_id}) at {event['time']}:\n{event['code']}\n{event['description']}\n{event['details']}\n")
     except (GlobusAPIError, NetworkError) as e:
         logger.error(f"Error: {e}")
