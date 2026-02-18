@@ -61,7 +61,8 @@ def submit_transfer_task(
         source_endpoint=source_endpoint,
         destination_endpoint=destination_endpoint,
         label=label,
-        verify_checksum=verify_checksum
+        verify_checksum=verify_checksum,
+        notify_on_succeeded=False
     )
     transfer_data.add_item(source_path, destination_path)
 
