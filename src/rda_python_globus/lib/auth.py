@@ -52,6 +52,6 @@ def transfer_client(namespace="DEFAULT"):
         auth_client,
         access_token=access_token,
         expires_at=int(access_token_expires),
-        on_refresh=storage_adapter.store_token_response(auth_client.oauth2_refresh_token(refresh_token)),
+        on_refresh=storage_adapter.store_token_response,
     )
     return globus_sdk.TransferClient(authorizer=authorizer, app_name="dsglobus")
